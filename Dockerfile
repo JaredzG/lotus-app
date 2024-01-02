@@ -20,10 +20,10 @@ WORKDIR /app
 
 RUN npm install -g npm@latest
 
-RUN --mount=type=bind,source=frontend/package.json,target=package.json \
-    --mount=type=bind,source=frontend/package-lock.json,target=package-lock.json \
-    --mount=type=cache,target=/root/.npm \
-    mkdir frontend && cd frontend && npm ci
+# RUN --mount=type=bind,source=frontend/package.json,target=package.json \
+#     --mount=type=bind,source=frontend/package-lock.json,target=package-lock.json \
+#     --mount=type=cache,target=/root/.npm \
+#     mkdir frontend && cd frontend && npm ci
 
 
 # Run the application as a non-root user.
