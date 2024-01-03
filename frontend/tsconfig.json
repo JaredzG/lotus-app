@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "es2022",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
+  },
+  "include": [".eslintrc.cjs", "src"],
+  "exclude": ["node_modules"],
+  "watchOptions": {
+    "watchFile": "dynamicPriorityPolling"
+  },
+  "extends": "astro/tsconfigs/base"
+}
