@@ -11,7 +11,7 @@
     "jsx": "react-jsx",
     "jsxImportSource": "react"
   },
-  "include": [".eslintrc.cjs", "src"],
+  "include": [".eslintrc.cjs", "**/*.ts*"],
   "exclude": ["node_modules"],
   "watchOptions": {
     "watchFile": "dynamicPriorityPolling"
