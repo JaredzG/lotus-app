@@ -1,1 +1,1 @@
-# dota-frontend
+# Lotus App
