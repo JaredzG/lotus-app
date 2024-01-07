@@ -1,10 +1,10 @@
 .PHONY: dev build preview
 
 dev:
-	@cd frontend && npm run dev
+	@cd lotus && npm run dev
 
 build:
-	@cd frontend && npm run build
+	@cd lotus && npm run build
 
 preview:
-	@cd frontend && npm run preview
+	@cd lotus && npm run preview

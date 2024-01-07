@@ -1,5 +1,5 @@
-import { defineConfig } from "astro/config";
-import node from "@astrojs/node";
+import { defineConfig } from 'astro/config';
+import netlify from "@astrojs/netlify";
 
 import react from "@astrojs/react";
 
@@ -13,9 +13,7 @@ export default defineConfig({
     port: PORT,
   },
   output: "server",
-  adapter: node({
-    mode: "standalone",
-  }),
+  adapter: netlify(),
   vite: {
     server: {
       host: true,
@@ -28,5 +26,5 @@ export default defineConfig({
       },
     },
   },
-  integrations: [react()],
+  integrations: [react()]
 });

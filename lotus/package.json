@@ -1,7 +1,9 @@
 {
-  "name": "frontend",
+  "name": "lotus",
   "type": "module",
   "version": "0.0.1",
+  "author": "jaredzg",
+  "license": "ISC",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -11,14 +13,11 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.3.4",
-    "@astrojs/node": "^7.0.4",
+    "@astrojs/netlify": "^4.1.0",
     "@astrojs/react": "^3.0.9",
-    "@fastify/middie": "^8.3.0",
-    "@fastify/static": "^6.12.0",
-    "@types/react": "^18.2.46",
+    "@types/react": "^18.2.47",
     "@types/react-dom": "^18.2.18",
-    "astro": "^4.0.9",
-    "fastify": "^4.25.2",
+    "astro": "^4.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

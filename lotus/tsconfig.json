@@ -1,4 +1,5 @@
 {
+  "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "target": "es2022",
     "module": "es2022",
@@ -16,5 +17,4 @@
   "watchOptions": {
     "watchFile": "dynamicPriorityPolling"
   },
-  "extends": "astro/tsconfigs/base"
 }
