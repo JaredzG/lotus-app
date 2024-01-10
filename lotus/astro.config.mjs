@@ -1,8 +1,6 @@
-import { defineConfig } from 'astro/config';
-import netlify from "@astrojs/netlify";
-
+import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
-
+import vercel from "@astrojs/vercel/serverless";
 const HOST = process.env.SITE_HOST ?? "0.0.0.0";
 const PORT = parseInt(process.env.SITE_PORT ?? "3000");
 
@@ -13,7 +11,7 @@ export default defineConfig({
     port: PORT,
   },
   output: "server",
-  adapter: netlify(),
+  adapter: vercel(),
   vite: {
     server: {
       host: true,
@@ -26,5 +24,5 @@ export default defineConfig({
       },
     },
   },
-  integrations: [react()]
+  integrations: [react()],
 });
