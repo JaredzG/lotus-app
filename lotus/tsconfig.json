@@ -1,5 +1,5 @@
 {
-  // "extends": "astro/tsconfigs/strict",
+  "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "target": "es2022",
     "module": "es2022",
@@ -13,10 +13,10 @@
     "jsxImportSource": "react",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"]
     }
   },
-  "include": [".eslintrc.cjs", "**/*.ts*"],
+  "include": [".eslintrc.cjs", "**/*.ts*", "**/*.astro"],
   "exclude": ["node_modules"],
   "watchOptions": {
     "watchFile": "dynamicPriorityPolling"

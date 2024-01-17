@@ -2,8 +2,6 @@ import { cn } from "../../lib/utils";
 
 export type TileType = Pick<TileProps, "base" | "value">;
 
-// type selectState = "Selected" | "Unselected" | "Matched" | "Unmatched";
-
 interface TileProps {
   base: number;
   value: number;
@@ -14,7 +12,7 @@ interface TileProps {
   select: React.Dispatch<React.SetStateAction<TileType[]>>;
 }
 
-const Tile: React.FC<TileProps> = ({
+export default function Tile({
   base,
   value,
   selectedTiles,
@@ -22,7 +20,7 @@ const Tile: React.FC<TileProps> = ({
   isMatchedTile,
   isFailedMatchTile,
   select,
-}: TileProps) => {
+}: TileProps) {
   function handleClick() {
     if (!isSelectedTile) {
       if (!isMatchedTile) {
@@ -41,7 +39,7 @@ const Tile: React.FC<TileProps> = ({
   return (
     <div
       className={cn(
-        "flex justify-center items-center p-3 border-8 rounded-xl h-40 w-40 text-6xl font-bold text-yellow-500 bg-slate-500 cursor-pointer transition-colors ease-in-out duration-300",
+        "flex justify-center items-center p-3 border-8 rounded-xl h-40 w-40 text-6xl font-bold text-yellow-500 bg-slate-500 cursor-pointer",
         {
           "text-red-300 bg-green-800": isSelectedTile,
           "text-black bg-yellow-500 animate-ping-once": isMatchedTile,
@@ -53,6 +51,4 @@ const Tile: React.FC<TileProps> = ({
       {value}
     </div>
   );
-};
-
-export default Tile;
+}
