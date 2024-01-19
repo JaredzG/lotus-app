@@ -1,10 +1,10 @@
 ---
 import { GET } from "@/pages/api/grid";
-import { GridDialog } from "@/components/react/GridDialog";
+import { GridGame } from "@/components/react/GridGame";
 import type { GridEntry } from "@/components/react/Grid";
 
 const response = await GET(Astro);
 const responseBody = await response.json();
 const gridEntries: GridEntry[] = responseBody.data;
 ---
-<GridDialog gridEntries={gridEntries} client:load />
+<GridGame gridEntries={gridEntries} client:load />

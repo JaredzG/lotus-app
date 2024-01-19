@@ -22,11 +22,9 @@ export default function Tile({
   select,
 }: TileProps) {
   function handleClick() {
-    if (!isSelectedTile) {
-      if (!isMatchedTile) {
-        if (selectedTiles.length < 4) {
-          select([...selectedTiles, { base, value }]);
-        }
+    if (!isSelectedTile && !isMatchedTile) {
+      if (selectedTiles.length < 4) {
+        select([...selectedTiles, { base, value }]);
       }
     } else {
       const selectedTilesArray = Array.from(selectedTiles);

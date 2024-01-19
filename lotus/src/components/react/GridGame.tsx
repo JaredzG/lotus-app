@@ -6,15 +6,15 @@ import {
   DialogTitle,
   DialogDescription,
   DialogClose,
-} from "@/components/ui/_GridDialog";
+} from "@/components/ui/GridGameDialog";
 import Grid, { type GridEntry } from "@/components/react/Grid";
 import type { TileType } from "@/components/react/Tile";
 
-interface GridDialogProps {
+interface GridGameProps {
   gridEntries: GridEntry[];
 }
 
-export function GridDialog({ gridEntries }: GridDialogProps) {
+export function GridGame({ gridEntries }: GridGameProps) {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [tiles, setTiles] = useState<GridEntry[]>(gridEntries);
   const [selectedTiles, setSelectedTiles] = useState<TileType[]>([]);
@@ -53,7 +53,7 @@ export function GridDialog({ gridEntries }: GridDialogProps) {
             again?
           </DialogDescription>
         </DialogHeader>
-        <DialogClose asChild>
+        <DialogClose>
           <button
             onClick={handleDialogClose}
             className="text-slate-200 font-semibold bg-slate-600 max-w-max justify-self-center px-4 py-2 rounded-lg outline-none"
