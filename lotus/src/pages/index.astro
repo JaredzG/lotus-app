@@ -1,14 +1,9 @@
 ---
-import "@/styles/globals.css"
-import { GET } from "@/pages/api/grid";
-import { GridGame } from "@/components/react/GridGame";
-import type { GridEntry } from "@/components/react/Grid";
 import { cn } from "@/lib/utils";
-
-const response = await GET(Astro);
-const responseBody = await response.json();
-const gridEntries: GridEntry[] = responseBody.data;
+import Heroes from "@/components/react/Heroes"
 ---
-<body class={cn("flex flex-col justify-center items-center min-h-screen bg-slate-800")}>
-  <GridGame gridEntries={gridEntries} client:load />
-</body>
+<html class={cn("p-0 m-0 box-border")}>
+  <body class={cn("bg-red-400 overflow-x-hidden")}>
+    <Heroes client:only="react" />
+  </body>
+</html>
