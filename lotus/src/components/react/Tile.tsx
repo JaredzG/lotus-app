@@ -12,7 +12,7 @@ interface TileProps {
   select: React.Dispatch<React.SetStateAction<TileType[]>>;
 }
 
-export default function Tile({
+const Tile = ({
   base,
   value,
   selectedTiles,
@@ -20,8 +20,8 @@ export default function Tile({
   isMatchedTile,
   isFailedMatchTile,
   select,
-}: TileProps) {
-  function handleClick() {
+}: TileProps): JSX.Element => {
+  function handleClick(): void {
     if (!isSelectedTile && !isMatchedTile) {
       if (selectedTiles.length < 4) {
         select([...selectedTiles, { base, value }]);
@@ -49,4 +49,6 @@ export default function Tile({
       {value}
     </div>
   );
-}
+};
+
+export default Tile;

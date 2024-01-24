@@ -15,7 +15,7 @@ interface GridProps {
   setFailedMatchTiles: React.Dispatch<React.SetStateAction<TileType[]>>;
 }
 
-export default function Grid({
+const Grid = ({
   tiles,
   selectedTiles,
   matchedTiles,
@@ -24,7 +24,7 @@ export default function Grid({
   setSelectedTiles,
   setMatchedTiles,
   setFailedMatchTiles,
-}: GridProps) {
+}: GridProps): JSX.Element => {
   useEffect(() => {
     if (selectedTiles.length === 4) {
       const matchingTiles = selectedTiles.filter(
@@ -72,4 +72,6 @@ export default function Grid({
       ))}
     </div>
   );
-}
+};
+
+export default Grid;
