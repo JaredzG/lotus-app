@@ -18,8 +18,8 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
   ],
-  output: "server",
-  adapter: vercel(),
+  // output: "hybrid",
+  // adapter: vercel(),
   vite: {
     server: {
       host: true,

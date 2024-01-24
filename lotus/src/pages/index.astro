@@ -1,9 +1,11 @@
 ---
 import { cn } from "@/lib/utils";
-import Heroes from "@/components/react/Heroes"
+import Cards from "@/components/react/Cards"
 ---
-<html class={cn("p-0 m-0 box-border")}>
-  <body class={cn("bg-red-400 overflow-x-hidden")}>
-    <Heroes client:only="react" />
+<html>
+  <body class={cn("overflow-hidden")}>
+    <main class={cn("overflow-auto")}>
+      <Cards client:only />
+    </main>
   </body>
-</html>
+</html>@/components/react/HeroesandItems@/components/react/Cards
