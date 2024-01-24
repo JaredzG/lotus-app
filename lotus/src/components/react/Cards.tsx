@@ -44,10 +44,14 @@ const styles: Record<string, Record<string, string | number>> = {
   },
 };
 
-export default function Cards(): JSX.Element {
-  const [displayType, setDisplayType] = useState("Items");
+const Cards = (): JSX.Element => {
+  const [displayType, setDisplayType] = useState("Heroes");
+  const prevScrollPosition = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  const rectsRef = useRef<HTMLDivElement[]>([]);
+  const rectElementsRef = useRef<HTMLDivElement[]>([]);
+  const rectElementPositionsRef = useRef<
+    Record<string, Record<number, number>>
+  >({ Heroes: {}, Items: {} });
   const rectsArray = [...Array(styles[displayType].rectNum).keys()].map(
     (rect) => rect + 1
   );
@@ -56,7 +60,7 @@ export default function Cards(): JSX.Element {
 
   useGSAP(
     () => {
-      rectsRef.current.forEach((rect) => {
+      rectElementsRef.current.forEach((rect) => {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: rect,
@@ -84,8 +88,17 @@ export default function Cards(): JSX.Element {
 
       const handleDisplaySwitch = (event: MouseEvent): void => {
         if (event.ctrlKey) {
+          const tempScrollPosition =
+            (100 * lenis.animatedScroll) / window.innerHeight + 50;
+          const snappedRect = Math.round((tempScrollPosition - 50) / 80);
+          const snappedPositionVH =
+            rectElementPositionsRef.current[displayType][snappedRect];
+          const snappedPositionPX =
+            ((snappedPositionVH - 50) * window.innerHeight) / 100;
           const updatedDisplayType =
             displayType === "Heroes" ? "Items" : "Heroes";
+          lenis.scrollTo(prevScrollPosition.current);
+          prevScrollPosition.current = snappedPositionPX;
           setDisplayType(updatedDisplayType);
         }
       };
@@ -109,16 +122,24 @@ export default function Cards(): JSX.Element {
       ref={containerRef}
     >
       {rectsArray.map((rect, idx) => (
-        <div
+        <section
           key={`${idx}`}
-          ref={(rect: HTMLDivElement) => rectsRef.current.push(rect)}
+          ref={(rect: HTMLDivElement) => {
+            rectElementsRef.current.push(rect);
+            rectElementPositionsRef.current[displayType][idx + 1] =
+              50 + (idx + 1) * 80;
+          }}
           // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
           style={{ "--customHeight": rectPosArray[idx] } as CSSProperties}
           className={cn(
-            `h-[80dvh] w-[80dvw] absolute top-[var(--customHeight)] ${styles[displayType].rectStartingPosX} ${styles[displayType].rectBackgroundColor} border-4 border-solid ${styles[displayType].rectBorderColor}`
+            `h-[80dvh] w-[80dvw] absolute top-[var(--customHeight)] ${styles[displayType].rectStartingPosX} ${styles[displayType].rectBackgroundColor} border-4 border-solid ${styles[displayType].rectBorderColor} flex justify-center items-center font-bold text-9xl text-white`
           )}
-        ></div>
+        >
+          {idx + 1}
+        </section>
       ))}
     </div>
   );
-}
+};
+
+export default Cards;
