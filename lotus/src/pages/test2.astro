@@ -1,0 +1,82 @@
+---
+import { ViewTransitions } from "astro:transitions"
+import "@/styles/globals.css"
+import { cn } from "@/lib/utils"
+import TestComp from "@/components/react/TestComp";
+
+const cardArray = [...Array(124).keys()];
+const cardPositions = cardArray.map(
+  (key, idx) => `calc(90dvh + ${idx} * 80dvh)`
+);
+---
+<html>
+  <head>
+    <ViewTransitions />
+  </head>
+  <body class={cn("h-[calc(180dvh+124*80dvh)] w-dvw bg-indigo-800 relative")}>
+    <nav class={cn("sticky top-0 z-50")}>
+      <a href="/test1">Test1</a>
+      <a href="/test2">Test2</a>
+    </nav>
+    <div class="fadeOut"></div>
+    <TestComp client:only="react" direction="left" />
+    <!-- {cardArray.map((element, idx) => (
+        <section
+          id={`card-${idx}`}
+          style={`--customHeight: ${cardPositions[idx]}`}
+          class={cn(
+            `card h-[80dvh] w-[80dvw] absolute top-[var(--customHeight)] right-0 bg-cyan-600 border-4 border-solid border-white flex justify-center items-center text-white text-7xl font-bold snap-center`
+          )}
+        >
+          {++idx}
+        </section>
+      ))} -->
+  <style>
+    .fadeOut {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 100dvh;
+      width: 100dvw;
+      z-index: 9999;
+      pointer-events: none;
+      animation: fadeOut 2s ease-in forwards;
+    }
+
+    @keyframes fadeOut {
+      from {
+          background-color: rgba(0, 0, 0, 1);
+      }
+      to {
+          background-color: rgba(0, 0, 0, 0);
+      }
+    }
+
+  </style>
+  <script>
+    document.addEventListener("astro:before-swap", () => {
+      sessionStorage.setItem("test2-scroll", window.scrollY.toString())
+    });
+    document.addEventListener("astro:after-swap", () => {
+      if (sessionStorage.getItem("test1-scroll")) {
+        window.scrollTo({top: parseFloat(sessionStorage.getItem("test1-scroll")!), behavior: "instant"})
+      }
+    })
+    // import { initLenisAndGSAP, makeCardScrollAnimations } from "@/lib/utils";
+    // import { navigate } from "astro:transitions/client";
+
+    // initLenisAndGSAP();
+    // const cards = document.querySelectorAll(".card");
+    // cards.forEach((card) => makeCardScrollAnimations(`#${card.id}`, "left"))
+
+    // document.addEventListener('click', (event) => {
+    //   if (event.ctrlKey || event.metaKey) {
+    //       event.preventDefault();
+    //       navigate("/test1")
+    //   }
+    // });
+  </script>
+  </body>
+</html>

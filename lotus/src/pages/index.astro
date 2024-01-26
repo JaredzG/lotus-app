@@ -1,7 +1,11 @@
 ---
 import Cards from "@/components/react/Cards"
+import { ViewTransitions } from "astro:transitions"
 ---
 <html>
+  <head>
+    <ViewTransitions />
+  </head>
   <body>
     <main>
       <Cards client:only/>

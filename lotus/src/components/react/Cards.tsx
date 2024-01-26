@@ -87,7 +87,7 @@ const Cards = (): JSX.Element => {
       });
 
       const handleDisplaySwitch = (event: MouseEvent): void => {
-        if (event.ctrlKey) {
+        if (event.ctrlKey || event.metaKey) {
           const tempScrollPosition =
             (100 * lenis.animatedScroll) / window.innerHeight + 50;
           const snappedRect = Math.round((tempScrollPosition - 50) / 80);

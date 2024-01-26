@@ -1,0 +1,10 @@
+---
+import "@/styles/globals.css"
+import { cn } from "@/lib/utils"
+import TestComp from "../react/TestComp"
+
+const {transitionName} = Astro.props;
+---
+<div transition:name={transitionName} class={cn("h-1/4 w-1/4 bg-teal-500")}>
+  <TestComp client:load transition:persist="ex"/>
+</div>

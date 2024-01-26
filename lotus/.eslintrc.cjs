@@ -23,7 +23,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
-    project: "./lotus-web-app/lotus/tsconfig.json",
+    project: "./lotus/tsconfig.json",
   },
   plugins: ["react", "prettier"],
   ignorePatterns: ["**/*.*js"],
