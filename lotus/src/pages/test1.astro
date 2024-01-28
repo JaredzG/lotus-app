@@ -11,6 +11,10 @@ import { cn } from "@/lib/utils"
     <div class={cn("h-[150dvh] w-dvw flex justify-around items-center")}>
       <div class={cn("teal-box h-[40dvh] w-[40dvh] bg-teal-200")}></div>
       <div class={cn("violet-box h-[40dvh] w-[40dvh] bg-violet-200")}></div>
+      <div class={cn("relative overflow-hidden")}>
+        <div class={cn("loading-bar h-[40dvh] w-[5dvh] bg-pink-200 origin-top")}></div>
+        <div class={cn("loading-text font-medium text-2xl text-white absolute bottom-full right-1/2")}>0</div>
+      </div>
     </div>
     <div class={cn("big-container h-[200dvh] w-dvw bg-zinc-600")}>
       <div class={cn("pinned-container h-dvh w-dvw bg-stone-700 flex flex-col items-center justify-between p-28")}>
@@ -35,6 +39,18 @@ import { cn } from "@/lib/utils"
       }).to(".violet-box", {
         rotation: 315
       })
+
+      gsap.set(".loading-text", {xPercent: 50, opacity: 0})
+
+      gsap.timeline({defaults: {ease: "power1.inOut", duration: 5}}).from(".loading-bar", {
+        scaleY: 0,
+      }).to(".loading-text", {
+        textContent: "100",
+        roundProps: "textContent",
+
+        bottom: "0%",
+        opacity: 100
+      }, "<")
 
       ScrollTrigger.create({
         trigger: ".big-container",
