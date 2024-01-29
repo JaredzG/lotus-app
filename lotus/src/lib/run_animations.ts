@@ -63,35 +63,24 @@ ScrollTrigger.create({
   markers: false,
 });
 
-const slides = gsap.utils.toArray(".spacerSlide:not(:first-child)");
-gsap.set(slides, { yPercent: 101 });
-const slideUp = gsap.to(slides, {
-  yPercent: 0,
-  duration: 1,
-  stagger: 1,
-});
-
-ScrollTrigger.create({
-  trigger: ".spacerContainer",
-  start: "top top",
-  end: "bottom bottom",
-  pin: ".spacerPin",
-  animation: slideUp,
-  scrub: true,
-  markers: false,
-});
-
-const fadeIn = gsap.from(".slideContent", {
-  scale: 0,
-  duration: 1,
-  stagger: 1,
-});
-
-ScrollTrigger.create({
-  trigger: ".slideContent",
-  start: "top bottom",
-  end: "bottom top",
-  pinnedContainer: ".spacerPin",
-  animation: fadeIn,
-  scrub: true,
+const conts = document.querySelectorAll(".cont");
+conts.forEach((cont, idx) => {
+  gsap
+    .timeline({
+      scrollTrigger: {
+        trigger: cont,
+        start: "top top",
+        end: "bottom top",
+        pin: true,
+        pinSpacing: false,
+        scrub: true,
+        markers: false,
+      },
+    })
+    .from(cont, {
+      opacity: 0,
+    })
+    .to(cont, {
+      opacity: 0,
+    });
 });
