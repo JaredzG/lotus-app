@@ -52,16 +52,16 @@ import nightImage from "../assets/natalie-chaney-zhUzdTgtRP8-unsplash.jpg";
         <defs>
           <mask id="invertingMask" x="0" y="0" height="100%" width="100%">
             <rect x="0" y="0" height="100%" width="100%" fill="black"/>
-            <text id="label" x="50%" text-anchor="middle" dominant-baseline="hanging" fill="white" class={cn("text-[350px] font-extrabold tracking-[-0.15em]")}> VALLEY </text>
+            <text id="label" x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" fill="white" class={cn("text-[350px] font-extrabold tracking-[-0.15em]")}> VALLEY </text>
           </mask>
           <mask id="blurringMask" x="0" y="0" height="100%" width="100%">
             <rect x="0" y="0" height="100%" width="100%" fill="black"/>
-            <text id="label" x="50%" text-anchor="middle" dominant-baseline="hanging" fill="white" class={cn("text-[350px] font-extrabold tracking-[-0.15em]")}> VALLEY </text>
+            <text id="label" x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" fill="white" class={cn("text-[350px] font-extrabold tracking-[-0.15em]")}> VALLEY </text>
           </mask>
         </defs>
       </svg>
-      <div class={cn("invertMasked h-[30%] w-full absolute top-[60%] left-0 backdrop-invert")}></div>
-      <div class={cn("blurMasked h-[30%] w-full absolute top-[60%] left-0 backdrop-blur-sm")}></div>
+      <div class={cn("invertMasked h-full w-full absolute top-0 left-0 backdrop-invert")}></div>
+      <div class={cn("blurMasked h-full w-full absolute top-0 left-0 backdrop-blur-sm")}></div>
       <div id="overlay" class={cn("h-dvh w-dvw bg-black absolute top-0 z-20")}></div>
     </div>
     <!-- <div class={cn("h-[150dvh] w-dvw flex justify-around items-center")}>

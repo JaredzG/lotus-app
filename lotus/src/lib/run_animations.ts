@@ -7,7 +7,7 @@ initLenisAndGSAP();
 const labels = gsap.utils.toArray("text");
 
 gsap.set(labels, {
-  yPercent: 100,
+  yPercent: 200,
 });
 
 const tl = gsap.timeline({
