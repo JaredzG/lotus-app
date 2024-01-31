@@ -2,48 +2,13 @@
 import { ViewTransitions } from "astro:transitions"
 import "@/styles/globals.css"
 import { cn } from "@/lib/utils"
+import { Image } from "astro:assets"
+import nightImage from "../assets/natalie-chaney-zhUzdTgtRP8-unsplash.jpg";
 ---
 <html>
   <head>
     <!-- <ViewTransitions /> -->
     <script src="../lib/run_animations.ts"></script>
-  </head>
-  <body class={cn("bg-slate-900 overflow-x-hidden")}>
-    <div class={cn("h-[150dvh] w-dvw flex justify-around items-center")}>
-      <div class={cn("teal-box h-[40dvh] w-[40dvh] bg-teal-200")}></div>
-      <div class={cn("violet-box h-[40dvh] w-[40dvh] bg-violet-200")}></div>
-      <div class={cn("relative overflow-hidden")}>
-        <div class={cn("loading-bar h-[40dvh] w-[5dvh] bg-pink-200 origin-top")}></div>
-        <div class={cn("loading-text font-medium text-2xl text-red-700 absolute bottom-full right-1/2")}>0</div>
-      </div>
-    </div>
-    <div class={cn("big-container h-[200dvh] w-dvw bg-zinc-600")}>
-      <div class={cn("pinned-container h-dvh w-dvw bg-stone-700 flex flex-col items-center justify-between p-28")}>
-        <div class={cn("container-item h-[20%] w-[20%] bg-red-900")}>
-        </div>
-        <div class={cn("container-item h-[20%] w-[20%] bg-red-900")}>
-        </div>
-        <div class={cn("container-item h-[20%] w-[20%] bg-red-900")}>
-        </div>
-      </div>
-    </div>
-    <div class={cn("spacer h-[700dvh] w-full bg-slate-800")}>
-      <div class={cn("cont h-[200dvh] w-full bg-slate-800 flex flex-col items-center")}>
-          <div class={cn("slide h-full w-full bg-emerald-800 flex justify-center items-center")}>
-            <div class={cn("h-1/2 w-1/2 text text-7xl font-bold text-white flex justify-center")}>lol</div>
-        </div>
-      </div>
-      <div class={cn("cont h-[200dvh] w-full bg-slate-800 flex flex-col items-center")}>
-          <div class={cn("slide h-full w-full bg-pink-800 flex justify-center items-center")}>
-            <div class={cn("h-1/2 w-1/2 text text-7xl font-bold text-white flex justify-center")}>lol</div>
-          </div>
-      </div>
-      <div class={cn("cont h-[200dvh] w-full bg-slate-800 flex flex-col items-center")}>
-          <div class={cn("slide h-full w-full bg-teal-800 flex justify-center items-center")}>
-            <div class={cn("h-1/2 w-1/2 text text-7xl font-bold text-white flex justify-center")}>lol</div>
-          </div>
-      </div>
-    </div>
     <style>
       .fadeOut {
         position: fixed;
@@ -67,10 +32,94 @@ import { cn } from "@/lib/utils"
         }
       }
 
+      .invertMasked {
+        z-index: 10;
+        mask: url(#invertingMask);
+      }
+
+      .blurMasked {
+        z-index: 20;
+        mask: url(#blurringMask);
+        background: linear-gradient(to right, rgba(255, 0, 0, 0.3), rgba(0, 0, 255, 0.3))
+      }
+
     </style>
-    <script>
-      import { initLenisAndGSAP } from "@/lib/utils";
-      initLenisAndGSAP();
-    </script>
-  </body>
-</html>
+  </head>
+  <body class={cn("overflow-x-hidden bg-slate-950")}>
+    <div class={cn("h-dvh w-dvw relative")}>
+      <Image src={nightImage} alt="night" class={cn("h-full w-full")} />
+      <svg class={cn("absolute top-0 left-0")} height="100%" width="100%">
+        <defs>
+          <mask id="invertingMask" x="0" y="0" height="100%" width="100%">
+            <rect x="0" y="0" height="100%" width="100%" fill="black"/>
+            <text id="label" x="50%" text-anchor="middle" dominant-baseline="hanging" fill="white" class={cn("text-[350px] font-extrabold tracking-[-0.15em]")}> VALLEY </text>
+          </mask>
+          <mask id="blurringMask" x="0" y="0" height="100%" width="100%">
+            <rect x="0" y="0" height="100%" width="100%" fill="black"/>
+            <text id="label" x="50%" text-anchor="middle" dominant-baseline="hanging" fill="white" class={cn("text-[350px] font-extrabold tracking-[-0.15em]")}> VALLEY </text>
+          </mask>
+        </defs>
+      </svg>
+      <div class={cn("invertMasked h-[30%] w-full absolute top-[60%] left-0 backdrop-invert")}></div>
+      <div class={cn("blurMasked h-[30%] w-full absolute top-[60%] left-0 backdrop-blur-sm")}></div>
+      <div id="overlay" class={cn("h-dvh w-dvw bg-black absolute top-0 z-20")}></div>
+    </div>
+    <!-- <div class={cn("h-[150dvh] w-dvw flex justify-around items-center")}>
+      <div class={cn("teal-box h-[40dvh] w-[40dvh] bg-teal-200")}></div>
+      <div class={cn("violet-box h-[40dvh] w-[40dvh] bg-violet-200")}></div>
+      <div class={cn("relative overflow-hidden")}>
+        <div class={cn("loading-bar h-[40dvh] w-[5dvh] bg-pink-200 origin-top")}></div>
+        <div class={cn("loading-text font-medium text-2xl text-red-700 absolute bottom-full right-1/2")}>0</div>
+      </div>
+    </div>
+    <div class={cn("big-container h-[200dvh] w-dvw bg-zinc-600")}>
+      <div class={cn("pinned-container h-dvh w-dvw bg-stone-700 flex flex-col items-center justify-between p-28")}>
+        <div class={cn("container-item h-[20%] w-[20%] bg-red-900")}>
+        </div>
+        <div class={cn("container-item h-[20%] w-[20%] bg-red-900")}>
+        </div>
+        <div class={cn("container-item h-[20%] w-[20%] bg-red-900")}>
+        </div>
+      </div>
+    </div>
+    <div class={cn("spacer h-[700dvh] w-full bg-slate-800")}>
+      <div class={cn("cont h-[200dvh] w-full bg-slate-800 flex flex-col items-center")}>
+        <div class={cn("slide h-full w-full bg-emerald-800 flex justify-center items-center")}>
+          <div class={cn("h-1/2 w-1/2 text text-7xl font-bold text-white flex justify-center")}>lol</div>
+        </div>
+      </div>
+      <div class={cn("cont h-[200dvh] w-full bg-slate-800 flex flex-col items-center")}>
+        <div class={cn("slide h-full w-full bg-pink-800 flex justify-center items-center")}>
+          <div class={cn("h-1/2 w-1/2 text text-7xl font-bold text-white flex justify-center")}>lol</div>
+        </div>
+      </div>
+      <div class={cn("cont h-[200dvh] w-full bg-slate-800 flex flex-col items-center")}>
+          <div class={cn("slide h-full w-full bg-teal-800 flex justify-center items-center")}>
+            <div class={cn("h-1/2 w-1/2 text text-7xl font-bold text-white flex justify-center")}>lol</div>
+          </div>
+        </div>
+      </div>
+      <div class={cn("h-[400dvh] w-full")}>
+        <div class={cn("contentContainer h-[200dvh] w-full")}>
+          <div class={cn("squareContainer h-[100dvh] w-full flex justify-center items-center")}>
+            <div class={cn("square h-[80dvh] w-[80dvw] relative overflow-hidden")}>
+              <div class={cn("tile h-full w-full bg-red-500 absolute")}></div>
+              <div class={cn("tile h-full w-full bg-green-500 absolute")}></div>
+              <div class={cn("tile h-full w-full bg-yellow-500 absolute")}></div>
+              <div class={cn("tile h-full w-full bg-purple-500 absolute")}></div>
+            </div>
+          </div>
+        </div>
+        <div class={cn("contentContainer h-[200dvh] w-full")}>
+          <div class={cn("squareContainer h-[100dvh] w-full flex justify-center items-center")}>
+            <div class={cn("square h-[80dvh] w-[80dvw] relative overflow-hidden")}>
+              <div class={cn("tile h-full w-full bg-red-500 absolute")}></div>
+              <div class={cn("tile h-full w-full bg-green-500 absolute")}></div>
+              <div class={cn("tile h-full w-full bg-yellow-500 absolute")}></div>
+              <div class={cn("tile h-full w-full bg-blue-500 absolute")}></div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </body>
+    </html>
