@@ -2,11 +2,16 @@
 import "@/styles/globals.css"
 import Layout from "@/layouts/Layout.astro";
 import { cn } from "@/lib/utils";
+
+const heroes = [...Array(124).keys()];
 ---
 <Layout title="Lotus - Your DotA Companion">
   <div class={cn("contentContainer w-full flex flex-col items-center")}>
     <div class={cn("h-[10dvh] w-full sticky top-0 backdrop-blur-xl")}></div>
-    <main class={cn("h-[200dvh] w-[90dvw] relative -z-10 bg-gradient-to-b from-red-600 to-blue-600 rounded-3xl")}>
+    <main class={cn("h-[744rem] w-[60dvw] my-24 relative -z-10 bg-gradient-to-b from-red-600 to-blue-600")}>
+      {heroes.map((hero, idx) => (
+        <div style={`--xPos: calc(15dvw*${idx % 4}); --yPos: calc(24rem*${Math.floor(idx / 4)});`} class={cn(`h-96 w-1/4 border-2 bg-slate-100 absolute top-[var(--yPos)] left-[var(--xPos)]`)}></div>
+      ))}
     </main>
   </div>
   <style>
