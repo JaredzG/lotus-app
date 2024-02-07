@@ -14,6 +14,8 @@
     "@astrojs/react": "^3.0.9",
     "@astrojs/tailwind": "^5.1.0",
     "@astrojs/vercel": "^6.1.4",
+    "@aws-sdk/client-s3": "^3.507.0",
+    "@aws-sdk/s3-request-presigner": "^3.507.0",
     "@gsap/react": "^2.1.0",
     "@radix-ui/react-dialog": "^1.0.5",
     "@studio-freight/lenis": "^1.0.34",
@@ -31,6 +33,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@types/node": "^20.11.16",
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "autoprefixer": "^10.4.17",
     "cssnano": "^6.0.3",

@@ -2,6 +2,17 @@
 import "@/styles/globals.css"
 import Layout from "@/layouts/Layout.astro";
 import { cn } from "@/lib/utils";
+import { GET } from "@/pages/api/static/hero.secondary.images.json"
+
+const imageKeyResponse = await GET(Astro);
+const imageKeyData = await imageKeyResponse.json();
+// console.log(imageKeyData);
+const imageUrlResponse = await fetch("http://localhost:3000/api/server/hero.secondary.images", {
+  method: "POST",
+  body: JSON.stringify({images: imageKeyData})
+});
+const imageUrlData = await imageUrlResponse.json();
+// console.log(imageUrlData);
 
 const heroes = [...Array(124).keys()];
 ---
