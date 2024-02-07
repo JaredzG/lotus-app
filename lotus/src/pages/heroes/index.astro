@@ -3,6 +3,7 @@ import "@/styles/globals.css"
 import Layout from "@/layouts/Layout.astro";
 import { cn } from "@/lib/utils";
 import { GET } from "@/pages/api/static/hero.secondary.images.json"
+import { Image } from "astro:assets";
 
 const imageKeyResponse = await GET(Astro);
 const imageKeyData = await imageKeyResponse.json();
@@ -12,20 +13,25 @@ const imageUrlResponse = await fetch("http://localhost:3000/api/server/hero.seco
   body: JSON.stringify({images: imageKeyData})
 });
 const imageUrlData = await imageUrlResponse.json();
-// console.log(imageUrlData);
+console.log(imageUrlData);
 
 const heroes = [...Array(124).keys()];
 ---
 <Layout title="Lotus - Your DotA Companion">
   <div class={cn("contentContainer w-full flex flex-col items-center")}>
-    <div class={cn("h-[10dvh] w-full sticky top-0 backdrop-blur-xl")}></div>
-    <main class={cn("h-[744rem] w-[60dvw] my-24 relative -z-10 bg-gradient-to-b from-red-600 to-blue-600")}>
+    <div class={cn("h-[10dvh] w-full sticky top-0 backdrop-blur-xl z-10")}></div>
+    <main class={cn("h-[744rem] w-[60dvw] my-24 relative bg-gradient-to-b from-red-600 to-blue-600")}>
       {heroes.map((hero, idx) => (
-        <div style={`--xPos: calc(15dvw*${idx % 4}); --yPos: calc(24rem*${Math.floor(idx / 4)});`} class={cn(`h-96 w-1/4 border-2 bg-slate-100 absolute top-[var(--yPos)] left-[var(--xPos)]`)}></div>
+        <div style={`--xPos: calc(15dvw*${idx % 4}); --yPos: calc(24rem*${Math.floor(idx / 4)});`} class={cn(`h-96 w-1/4 border-2 bg-slate-500 absolute top-[var(--yPos)] left-[var(--xPos)]`)}>
+          <div class={cn("h-full w-full absolute hover:backdrop-blur-sm")}></div>
+          <Image src={imageUrlData[idx]} alt="image" height="100" width="100" class={cn("h-full w-full object-cover")} />
+        </div>
       ))}
     </main>
   </div>
   <style>
   </style>
+  <script>
+  </script>
   <script src="../../lib/run_animations.ts"></script>
 </Layout>
