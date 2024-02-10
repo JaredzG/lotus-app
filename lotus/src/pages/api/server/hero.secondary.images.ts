@@ -1,5 +1,9 @@
 import type { APIRoute } from "astro";
-import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  GetObjectCommand,
+  GetObjectTaggingCommand,
+} from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME ?? "lotus-app-images";
@@ -27,12 +31,23 @@ const POST: APIRoute = async ({ params, request }) => {
       Key: reqData.images[i],
     });
 
+    const getSecondaryImageTagCommand = new GetObjectTaggingCommand({
+      Bucket: S3_BUCKET_NAME,
+      Key: reqData.images[i],
+    });
+
     const secondaryImageUrl = await getSignedUrl(
       s3,
       getHeroSecondaryImageCommand
     );
 
-    responseData.push(secondaryImageUrl);
+    const secondaryImageTags = (await s3.send(getSecondaryImageTagCommand))
+      .TagSet;
+
+    responseData.push({
+      imageUrl: secondaryImageUrl,
+      tags: secondaryImageTags,
+    });
   }
   return new Response(JSON.stringify(responseData));
 };

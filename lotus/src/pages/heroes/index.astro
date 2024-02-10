@@ -13,20 +13,21 @@ const imageUrlResponse = await fetch("http://localhost:3000/api/server/hero.seco
   method: "POST",
   body: JSON.stringify({images: imageKeyData})
 });
-const imageUrlData = await imageUrlResponse.json();
-console.log(imageUrlData);
-
-const heroes = [...Array(124).keys()];
+const heroes = await imageUrlResponse.json();
 ---
 <Layout title="Lotus - Your DotA Companion">
   <div class={cn("contentContainer w-full flex flex-col items-center")}>
     <div class={cn("h-[10dvh] w-full sticky top-0 backdrop-blur-xl z-10")}></div>
     <main class={cn("h-[744rem] w-[60dvw] my-24 relative ")}>
       {heroes.map((hero, idx) => (
-        <Skeleton style={{"--xPos": `calc(15dvw*${idx % 4})`, "--yPos": `calc(24rem*${Math.floor(idx / 4)})`}} className={cn("skeleton h-96 w-1/4 border-2 bg-slate-500 absolute top-[var(--yPos)] left-[var(--xPos)] overflow-hidden")} />
-        <div style={`--xPos: calc(15dvw*${idx % 4}); --yPos: calc(24rem*${Math.floor(idx / 4)});`} class={cn("hero h-96 w-1/4 border-2 bg-slate-500 absolute top-[var(--yPos)] left-[var(--xPos)] overflow-hidden origin-top-left")}>
-          <div class={cn("imageFilter h-full w-full absolute z-10")}></div>
-          <Image src={imageUrlData[idx]} alt="image" height="100" width="100" class={cn("heroImage h-full w-full object-cover")} />
+        <div style={`--xPos: calc(15dvw*${idx % 4}); --yPos: calc(24rem*${Math.floor(idx / 4)});`} class={cn("h-96 w-1/4 border-2 bg-slate-500 absolute top-[var(--yPos)] left-[var(--xPos)] overflow-hidden")}>
+          <Skeleton className={cn("skeleton h-full w-full absolute top-0 left-0 rounded-none")} />
+          <div class={cn("hero h-full w-full absolute top-0 left-0 origin-top-left")}>
+            <div class={cn("imageFilter h-full w-full absolute z-10")}>
+              <p class={cn("filterText text-white font-semibold text-3xl absolute left-1/2")}>{hero.imageUrl}</p>
+            </div>
+            <Image src={hero.imageUrl} alt="image" height="100" width="100" class={cn("heroImage h-full w-full object-cover")} />
+        </div>
         </div>
       ))}
     </main>
