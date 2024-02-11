@@ -2,9 +2,10 @@ import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
 import vercel from "@astrojs/vercel/serverless";
 import tailwind from "@astrojs/tailwind";
+import "dotenv/config";
 
-const HOST = process.env.SITE_HOST ?? "0.0.0.0";
-const PORT = parseInt(process.env.SITE_PORT ?? "3000");
+const HOST = process.env.SITE_HOST;
+const PORT = parseInt(process.env.SITE_PORT);
 
 // https://astro.build/config
 export default defineConfig({
@@ -33,6 +34,6 @@ export default defineConfig({
     },
   },
   image: {
-    domains: ["amazonaws.com"],
+    domains: ["amazonaws.com", "cloudfront.net"],
   },
 });

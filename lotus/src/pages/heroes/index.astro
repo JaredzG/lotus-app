@@ -2,37 +2,46 @@
 import "@/styles/globals.css"
 import Layout from "@/layouts/Layout.astro";
 import { cn } from "@/lib/utils";
-import { GET } from "@/pages/api/static/hero.secondary.images.json"
 import { Image } from "astro:assets";
 import { Skeleton } from "@/components/ui/skeleton"
+import { GET } from "../api/server/hero.secondary.images";
 
+const CF = import.meta.env.CF_DOMAIN;
 
-const imageKeyResponse = await GET(Astro);
-const imageKeyData = await imageKeyResponse.json();
-const imageUrlResponse = await fetch("http://localhost:3000/api/server/hero.secondary.images", {
-  method: "POST",
-  body: JSON.stringify({images: imageKeyData})
-});
-const heroes = await imageUrlResponse.json();
+const response = await GET(Astro);
+const heroes = await response.json();
+
+interface Hero {
+  alias: string;
+  complexity: string;
+  attack_type: string;
+  primary_attribute: string;
+  secondary_image_key: string;
+}
 ---
 <Layout title="Lotus - Your DotA Companion">
   <div class={cn("contentContainer w-full flex flex-col items-center")}>
-    <div class={cn("h-[10dvh] w-full sticky top-0 backdrop-blur-xl z-10")}></div>
+    <div class={cn("blurred h-[10dvh] w-full sticky top-0 backdrop-blur-xl z-10")}></div>
     <main class={cn("h-[744rem] w-[60dvw] my-24 relative ")}>
-      {heroes.map((hero, idx) => (
-        <div style={`--xPos: calc(15dvw*${idx % 4}); --yPos: calc(24rem*${Math.floor(idx / 4)});`} class={cn("h-96 w-1/4 border-2 bg-slate-500 absolute top-[var(--yPos)] left-[var(--xPos)] overflow-hidden")}>
+      {heroes.map((hero: Hero, idx: number) => (
+        <div style={`--xPos: calc(15dvw*${idx % 4}); --yPos: calc(24rem*${Math.floor(idx / 4)});`} class={cn("h-96 w-1/4 border-2 bg-slate-500 absolute top-[var(--yPos)] left-[var(--xPos)] overflow-hidden cursor-pointer")}>
           <Skeleton className={cn("skeleton h-full w-full absolute top-0 left-0 rounded-none")} />
           <div class={cn("hero h-full w-full absolute top-0 left-0 origin-top-left")}>
             <div class={cn("imageFilter h-full w-full absolute z-10")}>
-              <p class={cn("filterText text-white font-semibold text-3xl absolute left-1/2")}>{hero.imageUrl}</p>
+              <p class={cn("filterText text-white font-semibold text-3xl absolute top-1/2 -translate-y-1/2 -left-full text-center text-nowrap")}>
+                {hero.alias}<br>{hero.attack_type}<br>{hero.complexity}<br>{hero.primary_attribute}
+              </p>
             </div>
-            <Image src={hero.imageUrl} alt="image" height="100" width="100" class={cn("heroImage h-full w-full object-cover")} />
-        </div>
+            <Image src={`${CF}${hero.secondary_image_key}`} alt="image" height="100" width="100" class={cn("heroImage h-full w-full object-cover absolute top-0 left-0")} />
+          </div>
         </div>
       ))}
     </main>
   </div>
   <style>
+    .blurred {
+      box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.5);
+    }
   </style>
   <script>
   </script>

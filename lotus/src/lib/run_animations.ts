@@ -4,7 +4,6 @@ import { initLenisAndGSAP } from "./utils.js";
 
 initLenisAndGSAP();
 
-const skeletons = gsap.utils.toArray(".skeleton");
 const heroes = gsap.utils.toArray(".hero");
 const filters = gsap.utils.toArray(".imageFilter");
 const filterTexts = gsap.utils.toArray(".filterText");
@@ -17,28 +16,15 @@ heroes.forEach((hero) => {
   });
 });
 
-const tl = gsap.timeline({
-  defaults: {
-    ease: "expo.inOut",
-    duration: 0.5,
-  },
-});
-
-tl.to(skeletons, {
+const imageExpand = gsap.to(heroes, {
   scaleX: 1,
   scaleY: 1,
   stagger: 0.1,
-}).to(
-  heroes,
-  {
-    scaleX: 1,
-    scaleY: 1,
-    stagger: 0.1,
-  },
-  "<"
-);
+  ease: "expo.inOut",
+  duration: 1,
+});
 
-tl.delay(3);
+imageExpand.delay(2);
 
 filters.forEach((filter, idx) => {
   const tl = gsap.timeline({
@@ -52,12 +38,10 @@ filters.forEach((filter, idx) => {
     backdropFilter: "blur(10px)",
     boxShadow: "inset 0  0 25px 25px rgba(0,  0,  0,  0.5)",
   })
-    .fromTo(
+    .to(
       filterTexts[idx],
       {
-        xPercent: -1000,
-      },
-      {
+        left: "50%",
         xPercent: -50,
       },
       "<"
