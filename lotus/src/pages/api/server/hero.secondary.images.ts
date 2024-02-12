@@ -5,7 +5,7 @@ const GET: APIRoute = async ({ params, request }) => {
   const { data: heroes, error } = await supabase
     .from("hero")
     .select(
-      "alias, complexity, attack_type, primary_attribute, secondary_image_key"
+      "alias, complexity, attackType:attack_type, primaryAttribute:primary_attribute, secondaryImageKey:secondary_image_key"
     )
     .order("alias", { ascending: true });
 

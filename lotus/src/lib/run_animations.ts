@@ -26,6 +26,10 @@ const imageExpand = gsap.to(heroes, {
 
 imageExpand.delay(2);
 
+gsap.set(filterTexts, {
+  scale: 0,
+});
+
 filters.forEach((filter, idx) => {
   const tl = gsap.timeline({
     defaults: {
@@ -41,6 +45,7 @@ filters.forEach((filter, idx) => {
     .to(
       filterTexts[idx],
       {
+        scale: 1,
         left: "50%",
         xPercent: -50,
       },
