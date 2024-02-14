@@ -4,15 +4,22 @@ import { initLenisAndGSAP } from "./utils";
 
 initLenisAndGSAP();
 
+const cells = gsap.utils.toArray<HTMLElement>(".cell");
 const heroes = gsap.utils.toArray<HTMLElement>(".hero");
 const filters = gsap.utils.toArray<HTMLElement>(".imageFilter");
 const images = gsap.utils.toArray<HTMLElement>(".heroImage");
 
-heroes.forEach((hero) => {
-  gsap.set(hero, {
-    scaleX: 0,
-    scaleY: 0,
-  });
+gsap.set(cells, {
+  opacity: 100,
+});
+
+gsap.set(heroes, {
+  scaleX: 0,
+  scaleY: 0,
+});
+
+gsap.set(images, {
+  opacity: 100,
 });
 
 const imageExpand = gsap.to(heroes, {
@@ -33,7 +40,8 @@ filters.forEach((filter, idx) => {
 
   heroInfoContainers.forEach((container) => {
     gsap.set(container, {
-      yPercent: 140,
+      opacity: 100,
+      yPercent: 160,
     });
   });
 

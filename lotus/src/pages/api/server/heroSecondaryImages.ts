@@ -1,15 +1,23 @@
 import { z } from "zod";
-import { asc } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import type { APIRoute } from "astro";
 import { db } from "../../../db/db";
-import { hero } from "../../../../drizzle/schema";
+import {
+  hero,
+  heroAttackType,
+  heroComplexity,
+  heroPrimaryAttribute,
+  heroRole,
+  heroRoleType,
+} from "../../../../drizzle/schema";
 
 const HeroCard = z
   .object({
     alias: z.string(),
-    complexity: z.string(),
-    attackType: z.string(),
-    primaryAttribute: z.string(),
+    primaryAttribute: z.enum(heroPrimaryAttribute.enumValues),
+    attackType: z.enum(heroAttackType.enumValues),
+    roles: z.array(z.enum(heroRoleType.enumValues)),
+    complexity: z.enum(heroComplexity.enumValues),
     secondaryImageKey: z.string(),
   })
   .required();
@@ -17,18 +25,43 @@ const HeroCard = z
 type HeroCardType = z.infer<typeof HeroCard>;
 
 const GET: APIRoute = async ({ params, request }) => {
-  const heroes = await db
+  const rows = await db
     .select({
       alias: hero.alias,
-      attackType: hero.attackType,
-      complexity: hero.complexity,
       primaryAttribute: hero.primaryAttribute,
+      attackType: hero.attackType,
+      roleType: heroRole.type,
+      complexity: hero.complexity,
       secondaryImageKey: hero.secondaryImageKey,
     })
     .from(hero)
+    .innerJoin(heroRole, eq(hero.id, heroRole.heroId))
     .orderBy(asc(hero.alias));
 
-  const response = heroes.filter((hero) => HeroCard.safeParse(hero).success);
+  const heroes: Record<string, any> = {};
+
+  rows.forEach((row) => {
+    if (heroes[row.alias!] === undefined) {
+      heroes[row.alias!] = {
+        alias: row.alias,
+        complexity: row.complexity,
+        attackType: row.attackType,
+        primaryAttribute: row.primaryAttribute,
+        secondaryImageKey: row.secondaryImageKey,
+        roles: [row.roleType],
+      };
+    } else {
+      heroes[row.alias!].roles.push(row.roleType);
+    }
+  });
+
+  const response: HeroCardType[] = [];
+
+  for (const hero in heroes) {
+    if (HeroCard.safeParse(heroes[hero]).success) {
+      response.push(heroes[hero] as HeroCardType);
+    }
+  }
 
   return new Response(JSON.stringify(response), {
     status: 200,

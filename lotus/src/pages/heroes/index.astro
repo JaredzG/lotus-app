@@ -7,11 +7,19 @@ import { Skeleton } from "../../components/ui/skeleton"
 import { GET, type HeroCardType } from "../api/server/heroSecondaryImages";
 import meleeIcon from "../../assets/attackTypes/melee.png";
 import rangedIcon from "../../assets/attackTypes/ranged.png";
-import complexityIcon from "../../assets/complexity/complexity.png";
+import carryIcon from "../../assets/roles/carry.png";
+import disablerIcon from "../../assets/roles/disabler.png";
+import durableIcon from "../../assets/roles/durable.png";
+import escapeIcon from "../../assets/roles/escape.png";
+import initiatorIcon from "../../assets/roles/initiator.png";
+import nukerIcon from "../../assets/roles/nuker.png";
+import pusherIcon from "../../assets/roles/pusher.png";
+import supportIcon from "../../assets/roles/support.png";
 import agilityIcon from "../../assets/primaryAttributes/agility.png";
 import intelligenceIcon from "../../assets/primaryAttributes/intelligence.png";
 import strengthIcon from "../../assets/primaryAttributes/strength.png";
 import universalIcon from "../../assets/primaryAttributes/universal.png";
+import complexityIcon from "../../assets/complexity/complexity.png";
 
 const CF = import.meta.env.CF_DOMAIN;
 
@@ -21,6 +29,17 @@ const attackTypes: Field = {
   Melee: meleeIcon,
   Ranged: rangedIcon,
 };
+
+const roles: Field = {
+  Carry: carryIcon,
+  Disabler: disablerIcon,
+  Durable: durableIcon,
+  Escape: escapeIcon,
+  Initiator: initiatorIcon,
+  Nuker: nukerIcon,
+  Pusher: pusherIcon,
+  Support: supportIcon,
+}
 
 const primaryAttributes: Field = {
   Agility: agilityIcon,
@@ -44,34 +63,35 @@ const heroes: HeroCardType[] = await response.json();
     <div class={cn("blurred h-[10dvh] w-full sticky top-0 backdrop-blur-xl z-50")}></div>
     <main class={cn("h-[744rem] w-[60dvw] my-24 relative ")}>
       {heroes.map((hero: HeroCardType, idx: number) => (
-        <div style={`--xPos: calc(15dvw*${idx % 4}); --yPos: calc(24rem*${Math.floor(idx / 4)});`} class={cn("h-96 w-1/4 border-2 bg-slate-500 absolute top-[var(--yPos)] left-[var(--xPos)] overflow-hidden cursor-pointer")}>
+        <div style={`--xPos: calc(15dvw*${idx % 4}); --yPos: calc(24rem*${Math.floor(idx / 4)});`} class={cn("cell h-96 w-1/4 border-2 bg-slate-500 absolute top-[var(--yPos)] left-[var(--xPos)] overflow-hidden cursor-pointer opacity-0")}>
           <Skeleton className={cn("skeleton h-full w-full absolute top-0 left-0 rounded-none")} />
           <div class={cn("hero h-full w-full absolute top-0 left-0 origin-top-left")}>
             <div class={cn("imageFilter h-full w-full p-7 flex flex-col justify-end items-center gap-3 absolute z-10")}>
               <div class={cn("h-1/5 w-full absolute top-[15%] flex justify-center items-center overflow-hidden")}>
-                <div class={cn("heroInfoContainer")}>
-                  <p class={cn("alias text-white font-semibold text-center leading-none uppercase")}>
+                <div class={cn("heroInfoContainer opacity-0")}>
+                  <p class={cn("alias w-full text-white font-semibold text-center leading-none uppercase")}>
                     {hero.alias}
                   </p>
                 </div>
               </div>
-              <div class={cn("absolute top-[40%] overflow-hidden")}>
-                <div class={cn("heroInfoContainer")}>
+              <div class={cn("absolute top-[35%] overflow-hidden")}>
+                <div class={cn("heroInfoContainer attackTypeAndRoles flex flex-wrap justify-center items-center gap-1 opacity-0")}>
                   <Picture src={attackTypes[hero.attackType]} alt={hero.attackType} class={cn("h-12 w-12")} />
+                  {hero.roles.map((role: string) => <Picture src={roles[role]} alt={hero.complexity} class={cn("h-12 w-12")} />)}
                 </div>
               </div>
-              <div class={cn("absolute top-[55%] overflow-hidden")}>
-                <div class={cn("heroInfoContainer")}>
+              <div class={cn("absolute top-[65%] overflow-hidden")}>
+                <div class={cn("heroInfoContainer opacity-0")}>
                   <Picture src={primaryAttributes[hero.primaryAttribute]} alt={hero.primaryAttribute} class={cn("h-12 w-12")} />
                 </div>
               </div>
-              <div class={cn("absolute top-[70%] overflow-hidden")}>
-                <div class={cn("flex heroInfoContainer")}>
+              <div class={cn("absolute top-[80%] overflow-hidden")}>
+                <div class={cn("heroInfoContainer flex flex-wrap opacity-0")}>
                   {[...Array(complexity[hero.complexity]).keys()].map((entry: number) => <Picture src={complexityIcon} alt={hero.complexity} class={cn("h-12 w-12")} />)}
                 </div>
               </div>
             </div>
-            <Picture src={`${CF}${hero.secondaryImageKey}`} alt={hero.alias} formats={["webp", "avif"]} height="497" width="658" class={cn("heroImage h-full w-full object-cover absolute top-0 left-0")} />
+            <Picture src={`${CF}${hero.secondaryImageKey}`} alt={hero.alias} formats={["webp", "avif"]} height="497" width="658" class={cn("heroImage h-full w-full object-cover absolute top-0 left-0 opacity-0")} />
           </div>
         </div>
       ))}
@@ -83,8 +103,12 @@ const heroes: HeroCardType[] = await response.json();
     }
 
     .alias {
-      font-size: calc(31px + 0.390625dvw);
+      font-size: 2rem;
       font-family: 'Satoshi', sans-serif;
+    }
+
+    .attackTypeAndRoles {
+      height: 100px;
     }
   </style>
   <script>
