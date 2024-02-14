@@ -1,44 +1,77 @@
 ---
-import { z } from "zod";
-import "@/styles/globals.css"
-import Layout from "@/layouts/Layout.astro";
-import { cn } from "@/lib/utils";
-import { Image } from "astro:assets";
-import { Skeleton } from "@/components/ui/skeleton"
-import { GET } from "../api/server/hero.secondary.images";
+import "../../styles/globals.css";
+import Layout from "../../layouts/Layout.astro";
+import { cn } from "../../lib/utils";
+import { Picture } from "astro:assets";
+import { Skeleton } from "../../components/ui/skeleton"
+import { GET, type HeroCardType } from "../api/server/heroSecondaryImages";
+import meleeIcon from "../../assets/attackTypes/melee.png";
+import rangedIcon from "../../assets/attackTypes/ranged.png";
+import complexityIcon from "../../assets/complexity/complexity.png";
+import agilityIcon from "../../assets/primaryAttributes/agility.png";
+import intelligenceIcon from "../../assets/primaryAttributes/intelligence.png";
+import strengthIcon from "../../assets/primaryAttributes/strength.png";
+import universalIcon from "../../assets/primaryAttributes/universal.png";
 
 const CF = import.meta.env.CF_DOMAIN;
 
-const HeroCard = z.object({
-  alias: z.string(),
-  complexity: z.string(),
-  attackType: z.string(),
-  primaryAttribute: z.string(),
-  secondaryImageKey: z.string(),
-}).required();
+type Field = Record<string, any>;
 
-type HeroCard = z.infer<typeof HeroCard>;
+const attackTypes: Field = {
+  Melee: meleeIcon,
+  Ranged: rangedIcon,
+};
+
+const primaryAttributes: Field = {
+  Agility: agilityIcon,
+  Intelligence: intelligenceIcon,
+  Strength: strengthIcon,
+  Universal: universalIcon,
+};
+
+const complexity: Field = {
+  "Simple": 1,
+  "Moderate": 2,
+  "Complex": 3,
+}
 
 const response = await GET(Astro);
 
-const heroes = await response.json();
-
-const validHeroes: HeroCard[] = heroes.filter((hero: any) => HeroCard.safeParse(hero).success);
+const heroes: HeroCardType[] = await response.json();
 ---
 <Layout title="Lotus - Your DotA Companion">
   <div class={cn("contentContainer w-full flex flex-col items-center")}>
-    <div class={cn("blurred h-[10dvh] w-full sticky top-0 backdrop-blur-xl z-10")}></div>
+    <div class={cn("blurred h-[10dvh] w-full sticky top-0 backdrop-blur-xl z-50")}></div>
     <main class={cn("h-[744rem] w-[60dvw] my-24 relative ")}>
-      {validHeroes.map((hero: HeroCard, idx: number) => (
+      {heroes.map((hero: HeroCardType, idx: number) => (
         <div style={`--xPos: calc(15dvw*${idx % 4}); --yPos: calc(24rem*${Math.floor(idx / 4)});`} class={cn("h-96 w-1/4 border-2 bg-slate-500 absolute top-[var(--yPos)] left-[var(--xPos)] overflow-hidden cursor-pointer")}>
           <Skeleton className={cn("skeleton h-full w-full absolute top-0 left-0 rounded-none")} />
           <div class={cn("hero h-full w-full absolute top-0 left-0 origin-top-left")}>
-            <div class={cn("imageFilter h-full w-full absolute z-10")}>
-              <p class={cn("filterText text-white font-semibold text-3xl absolute top-1/2 -translate-y-1/2 -left-full text-center text-nowrap")}>
-                {hero.alias}<br>{hero.attackType}<br>{hero.complexity}<br>{hero.primaryAttribute}
-              </p>
+            <div class={cn("imageFilter h-full w-full p-7 flex flex-col justify-end items-center gap-3 absolute z-10")}>
+              <div class={cn("h-1/5 w-full absolute top-[15%] flex justify-center items-center overflow-hidden")}>
+                <div class={cn("heroInfoContainer")}>
+                  <p class={cn("alias text-white font-semibold text-center leading-none uppercase")}>
+                    {hero.alias}
+                  </p>
+                </div>
+              </div>
+              <div class={cn("absolute top-[40%] overflow-hidden")}>
+                <div class={cn("heroInfoContainer")}>
+                  <Picture src={attackTypes[hero.attackType]} alt={hero.attackType} class={cn("h-12 w-12")} />
+                </div>
+              </div>
+              <div class={cn("absolute top-[55%] overflow-hidden")}>
+                <div class={cn("heroInfoContainer")}>
+                  <Picture src={primaryAttributes[hero.primaryAttribute]} alt={hero.primaryAttribute} class={cn("h-12 w-12")} />
+                </div>
+              </div>
+              <div class={cn("absolute top-[70%] overflow-hidden")}>
+                <div class={cn("flex heroInfoContainer")}>
+                  {[...Array(complexity[hero.complexity]).keys()].map((entry: number) => <Picture src={complexityIcon} alt={hero.complexity} class={cn("h-12 w-12")} />)}
+                </div>
+              </div>
             </div>
-            <Image src={`${CF}${hero.secondaryImageKey}`} alt="image" height="100" width="100" class={cn("heroImage h-full w-full object-cover absolute top-0 left-0")} />
+            <Picture src={`${CF}${hero.secondaryImageKey}`} alt={hero.alias} formats={["webp", "avif"]} height="497" width="658" class={cn("heroImage h-full w-full object-cover absolute top-0 left-0")} />
           </div>
         </div>
       ))}
@@ -48,8 +81,13 @@ const validHeroes: HeroCard[] = heroes.filter((hero: any) => HeroCard.safeParse(
     .blurred {
       box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.5);
     }
+
+    .alias {
+      font-size: calc(31px + 0.390625dvw);
+      font-family: 'Satoshi', sans-serif;
+    }
   </style>
   <script>
   </script>
-  <script src="../../lib/run_animations.ts"></script>
+  <script src="../../lib/runAnimations.ts"></script>
 </Layout>

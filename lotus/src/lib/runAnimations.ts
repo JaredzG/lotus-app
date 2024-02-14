@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { gsap } from "gsap";
-import { initLenisAndGSAP } from "./utils.js";
+import { initLenisAndGSAP } from "./utils";
 
 initLenisAndGSAP();
 
-const heroes = gsap.utils.toArray(".hero");
-const filters = gsap.utils.toArray(".imageFilter");
-const filterTexts = gsap.utils.toArray(".filterText");
-const images = gsap.utils.toArray(".heroImage");
+const heroes = gsap.utils.toArray<HTMLElement>(".hero");
+const filters = gsap.utils.toArray<HTMLElement>(".imageFilter");
+const images = gsap.utils.toArray<HTMLElement>(".heroImage");
 
 heroes.forEach((hero) => {
   gsap.set(hero, {
@@ -26,11 +25,18 @@ const imageExpand = gsap.to(heroes, {
 
 imageExpand.delay(2);
 
-gsap.set(filterTexts, {
-  scale: 0,
-});
-
 filters.forEach((filter, idx) => {
+  const heroInfoContainers = gsap.utils.toArray<HTMLElement>(
+    ".heroInfoContainer",
+    filter
+  );
+
+  heroInfoContainers.forEach((container) => {
+    gsap.set(container, {
+      yPercent: 140,
+    });
+  });
+
   const tl = gsap.timeline({
     defaults: {
       ease: "expo.inOut",
@@ -39,24 +45,24 @@ filters.forEach((filter, idx) => {
   });
 
   tl.to(filter, {
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
     backdropFilter: "blur(10px)",
     boxShadow: "inset 0  0 25px 25px rgba(0,  0,  0,  0.5)",
   })
-    .to(
-      filterTexts[idx],
-      {
-        scale: 1,
-        left: "50%",
-        xPercent: -50,
-      },
-      "<"
-    )
     .to(
       images[idx],
       {
         scale: "+=0.1",
       },
       "<"
+    )
+    .to(
+      heroInfoContainers,
+      {
+        yPercent: 0,
+        stagger: 0.1,
+      },
+      "<0.3"
     );
 
   tl.pause();
