@@ -63,10 +63,10 @@ const heroes: HeroCardType[] = await response.json();
     <div class={cn("blurred h-[10dvh] w-full sticky top-0 backdrop-blur-xl z-50")}></div>
     <main class={cn("h-[744rem] w-[60dvw] my-24 relative ")}>
       {heroes.map((hero: HeroCardType, idx: number) => (
-        <div style={`--xPos: calc(15dvw*${idx % 4}); --yPos: calc(24rem*${Math.floor(idx / 4)});`} class={cn("cell h-96 w-1/4 border-2 bg-slate-500 absolute top-[var(--yPos)] left-[var(--xPos)] overflow-hidden cursor-pointer opacity-0")}>
+        <div class={cn("cell h-96 w-1/4 border-2 bg-slate-500 absolute overflow-hidden cursor-pointer opacity-0")} data-position={idx}>
           <Skeleton className={cn("skeleton h-full w-full absolute top-0 left-0 rounded-none")} />
           <div class={cn("hero h-full w-full absolute top-0 left-0 origin-top-left")}>
-            <div class={cn("imageFilter h-full w-full p-7 flex flex-col justify-end items-center gap-3 absolute z-10")}>
+            <div class={cn("heroFilter h-full w-full p-7 flex flex-col justify-end items-center gap-3 absolute z-10")}>
               <div class={cn("h-1/5 w-full absolute top-[15%] flex justify-center items-center overflow-hidden")}>
                 <div class={cn("heroInfoContainer opacity-0")}>
                   <p class={cn("alias w-full text-white font-semibold text-center leading-none uppercase")}>
@@ -112,6 +112,18 @@ const heroes: HeroCardType[] = await response.json();
     }
   </style>
   <script>
+    import initializeLenisAndGSAP from "../../utils/initializeLenisAndGsap"
+    import animateHeroCells from "@/lib/animations/animateHeroCells";
+
+    initializeLenisAndGSAP();
+    const cells = document.querySelectorAll(".cell") as NodeListOf<HTMLElement>;
+    cells.forEach((cell) => {
+      const dataPosition = parseInt(cell.dataset.position!);
+      const dataPositionX = dataPosition % 4;
+      const dataPositionY = Math.trunc(dataPosition / 4);
+      cell.style.top = `calc(24rem*${dataPositionY})`;
+      cell.style.left = `calc(15dvw*${dataPositionX})`;
+    })
+    animateHeroCells();
   </script>
-  <script src="../../lib/runAnimations.ts"></script>
 </Layout>
