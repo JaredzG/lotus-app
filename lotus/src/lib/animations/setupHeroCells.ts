@@ -1,22 +1,13 @@
 import { gsap } from "gsap";
+import animateHeroFilters from "./animateHeroFilters";
 
-const setupHeroCells = (): void => {
-  const cells = gsap.utils.toArray<HTMLElement>(".cell");
-  const heroes = gsap.utils.toArray<HTMLElement>(".hero");
-  const images = gsap.utils.toArray<HTMLElement>(".heroImage");
+const cells = gsap.utils.toArray<HTMLElement>(".cell");
 
-  gsap.set(cells, {
-    opacity: 100,
-  });
+const setupHeroCells = gsap.timeline().set(cells, {
+  opacity: 100,
+  border: "2px solid white",
+});
 
-  gsap.set(heroes, {
-    scaleX: 0,
-    scaleY: 0,
-  });
-
-  gsap.set(images, {
-    opacity: 100,
-  });
-};
+animateHeroFilters();
 
 export default setupHeroCells;

@@ -1,21 +1,11 @@
 import gsap from "gsap";
 
-const slideUpHeroCellFilters = (): void => {
+const animateHeroFilters = (): void => {
   const filters = gsap.utils.toArray<HTMLElement>(".heroFilter");
   const images = gsap.utils.toArray<HTMLElement>(".heroImage");
 
   filters.forEach((filter, idx) => {
-    const heroInfoContainers = gsap.utils.toArray<HTMLElement>(
-      ".heroInfoContainer",
-      filter
-    );
-
-    heroInfoContainers.forEach((container) => {
-      gsap.set(container, {
-        opacity: 100,
-        yPercent: 160,
-      });
-    });
+    const filterContent = filter.querySelector(".filterContent");
 
     const tl = gsap.timeline({
       defaults: {
@@ -37,12 +27,12 @@ const slideUpHeroCellFilters = (): void => {
         "<"
       )
       .to(
-        heroInfoContainers,
+        filterContent,
         {
-          yPercent: 0,
-          stagger: 0.1,
+          clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+          duration: 1.5,
         },
-        "<0.3"
+        "<-0.1"
       );
 
     tl.pause();
@@ -57,4 +47,4 @@ const slideUpHeroCellFilters = (): void => {
   });
 };
 
-export default slideUpHeroCellFilters;
+export default animateHeroFilters;

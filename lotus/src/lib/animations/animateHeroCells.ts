@@ -1,11 +1,8 @@
 import setupHeroCells from "./setupHeroCells";
-import slideInHeroCells from "./slideInHeroCells";
-import slideUpHeroCellFilters from "./slideUpHeroCellFilters";
+import slideInHeroes from "./slideInHeroes";
 
 const animateHeroCells = (): void => {
-  setupHeroCells();
-  slideInHeroCells();
-  slideUpHeroCellFilters();
+  setupHeroCells.add(slideInHeroes.play());
 };
 
 export default animateHeroCells;
