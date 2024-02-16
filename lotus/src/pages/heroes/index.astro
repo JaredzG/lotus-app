@@ -2,17 +2,94 @@
 import "../../styles/globals.css";
 import Layout from "../../layouts/Layout.astro";
 import { cn } from "../../lib/utils";
-import HeroGrid from "@/components/react/HeroGrid";
-import { GET } from "../api/server/heroSecondaryImages"
-await GET(Astro)
+import { Picture } from "astro:assets";
+import { Skeleton } from "../../components/ui/skeleton"
+import { GET, type HeroCardType } from "../api/server/heroSecondaryImages";
+import meleeIcon from "../../assets/attackTypes/melee.png";
+import rangedIcon from "../../assets/attackTypes/ranged.png";
+import carryIcon from "../../assets/roles/carry.png";
+import disablerIcon from "../../assets/roles/disabler.png";
+import durableIcon from "../../assets/roles/durable.png";
+import escapeIcon from "../../assets/roles/escape.png";
+import initiatorIcon from "../../assets/roles/initiator.png";
+import nukerIcon from "../../assets/roles/nuker.png";
+import pusherIcon from "../../assets/roles/pusher.png";
+import supportIcon from "../../assets/roles/support.png";
+import agilityIcon from "../../assets/primaryAttributes/agility.png";
+import intelligenceIcon from "../../assets/primaryAttributes/intelligence.png";
+import strengthIcon from "../../assets/primaryAttributes/strength.png";
+import universalIcon from "../../assets/primaryAttributes/universal.png";
+import complexityIcon from "../../assets/complexity/complexity.png";
+const CF = import.meta.env.CF_DOMAIN;
+console.log(CF);
+type Field = Record<string, any>;
+const attackTypes: Field = {
+  Melee: meleeIcon,
+  Ranged: rangedIcon,
+};
+const roles: Field = {
+  Carry: carryIcon,
+  Disabler: disablerIcon,
+  Durable: durableIcon,
+  Escape: escapeIcon,
+  Initiator: initiatorIcon,
+  Nuker: nukerIcon,
+  Pusher: pusherIcon,
+  Support: supportIcon,
+}
+const primaryAttributes: Field = {
+  Agility: agilityIcon,
+  Intelligence: intelligenceIcon,
+  Strength: strengthIcon,
+  Universal: universalIcon,
+};
+const complexity: Field = {
+  "Simple": 1,
+  "Moderate": 2,
+  "Complex": 3,
+}
+const response = await GET(Astro);
+const heroes: HeroCardType[] = await response.json();
 ---
 <Layout title="Lotus - Your DotA Companion">
   <div class={cn("contentContainer w-full flex flex-col items-center")}>
-    <div class={cn("blurred h-[10dvh] w-full sticky top-0 backdrop-blur-xl z-50")}>
-      <button class={cn("button")}>Click Me</button>
-    </div>
+    <div class={cn("blurred h-[10dvh] w-full sticky top-0 backdrop-blur-xl z-50")}></div>
     <main class={cn("my-24 flex flex-wrap justify-center relative")}>
-      <HeroGrid context={Astro} client:only="react" />
+      {heroes.map((hero: HeroCardType, idx: number) => (
+        <div
+          class={cn(
+            "cell h-96 w-1/4 border-2 bg-slate-500 overflow-hidden cursor-pointer opacity-0 relative"
+          )}
+        >
+          <Skeleton
+            className={cn(
+              "skeleton h-full w-full absolute top-0 left-0 rounded-none"
+            )}
+          />
+          <div class={cn("hero h-full w-full absolute top-0 left-0")}>
+            <Picture src={`${CF}${hero.secondaryImageKey}`} alt={hero.alias} formats={["webp", "avif"]} height="497" width="658" class={cn("heroImage h-full w-full object-cover absolute top-0 left-0")} />
+            <div class={cn("heroFilter h-full w-full absolute top-0 left-0")}>
+              <div class={cn("filterContent h-full w-full p-7 flex flex-col justify-between items-center gap-3 absolute")}>
+                <div class={cn("heroInfoContainer h-1/5 w-full flex justify-center items-center overflow-hidden")}>
+                  <p class={cn("alias w-full text-white font-semibold text-center leading-none uppercase")}>
+                    {hero.alias}
+                  </p>
+                </div>
+                <div class={cn("heroInfoContainer w-full flex justify-center overflow-hidden")}>
+                  <Picture src={primaryAttributes[hero.primaryAttribute]} alt={hero.primaryAttribute} class={cn("h-12 w-12")} />
+                </div>
+                <div class={cn("heroInfoContainer w-48 flex flex-wrap gap-y-2 justify-center items-center overflow-hidden")}>
+                  <Picture src={attackTypes[hero.attackType]} alt={hero.attackType} class={cn("h-12 w-12")} />
+                  {hero.roles.map((role: string) => <Picture src={roles[role]} alt={hero.complexity} class={cn("h-12 w-12")} />)}
+                </div>
+                <div class={cn("heroInfoContainer w-full flex justify-center overflow-hidden")}>
+                  {[...Array(complexity[hero.complexity]).keys()].map((entry: number) => <Picture src={complexityIcon} alt={hero.complexity} class={cn("h-12 w-12")} />)}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
     </main>
   </div>
   <style>
@@ -39,17 +116,17 @@ await GET(Astro)
 
   </style>
   <script>
-    import initializeLenisAndGSAP from "../../utils/initializeLenisAndGsap"
+    import initializeLenisAndGsap from "@/utils/initializeLenisAndGsap"
     import animateHeroCells from "@/lib/animations/animateHeroCells";
     import resetHeroCells from "@/lib/animations/resetHeroCells";
 
-    // initializeLenisAndGSAP();
+    initializeLenisAndGsap();
 
-    // document.querySelector(".button")?.addEventListener("click", (e) => {
-    //   e.preventDefault();
-    //   resetHeroCells();
-    // })
+    document.querySelector(".button")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      resetHeroCells();
+    })
 
-    // animateHeroCells();
+    animateHeroCells();
   </script>
 </Layout>

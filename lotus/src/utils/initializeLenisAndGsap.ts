@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/dist/MotionPathPlugin";
 
-const initializeLenisAndGSAP = (): void => {
+const initializeLenisAndGsap = (): void => {
   const lenis = new Lenis();
 
   gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
@@ -20,4 +20,4 @@ const initializeLenisAndGSAP = (): void => {
   gsap.ticker.lagSmoothing(0);
 };
 
-export default initializeLenisAndGSAP;
+export default initializeLenisAndGsap;

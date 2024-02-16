@@ -20,6 +20,9 @@ declare global {
       USER_ACCESS_KEY: string;
       USER_SECRET_ACCESS_KEY: string;
       DB_URI: string;
+      SITE_HOST: string;
+      SITE_PORT: string;
+      CF_DOMAIN: string;
     }
   }
 }
