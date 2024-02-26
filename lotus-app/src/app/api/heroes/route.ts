@@ -1,16 +1,16 @@
-import { z } from "zod";
-import { type SQL, asc, eq } from "drizzle-orm";
-import { NextResponse, type NextRequest } from "next/server";
-import { db } from "@/lib/db";
+import { z } from 'zod';
+import { type SQL, asc, eq } from 'drizzle-orm';
+import { NextResponse, type NextRequest } from 'next/server';
+import { db } from '@/lib/db';
 import {
   hero,
   heroAttackType,
   heroComplexity,
   heroPrimaryAttribute,
   heroRole,
-  heroRoleType,
-} from "@/../drizzle/schema";
-import type { PgColumn, PgSelect, PgSelectDynamic } from "drizzle-orm/pg-core";
+  heroRoleType
+} from '@/../drizzle/schema';
+import type { PgColumn, PgSelect, PgSelectDynamic } from 'drizzle-orm/pg-core';
 
 const GET = async (request: NextRequest) => {
   const HeroCard = z
@@ -20,7 +20,7 @@ const GET = async (request: NextRequest) => {
       attackType: z.enum(heroAttackType.enumValues),
       roles: z.array(z.enum(heroRoleType.enumValues)),
       complexity: z.enum(heroComplexity.enumValues),
-      secondaryImageKey: z.string(),
+      primaryImageKey: z.string()
     })
     .required();
 
@@ -30,7 +30,7 @@ const GET = async (request: NextRequest) => {
     columns: string[],
     qb: T
   ): T | PgSelectDynamic<any> => {
-    if (columns.includes("role")) {
+    if (columns.includes('role')) {
       return qb.innerJoin(heroRole, eq(hero.id, heroRole.heroId)).$dynamic();
     }
 
@@ -42,7 +42,7 @@ const GET = async (request: NextRequest) => {
     primaryAttribute: asc(hero.primaryAttribute),
     attackType: asc(hero.attackType),
     role: asc(heroRole.type),
-    complexity: asc(hero.complexity),
+    complexity: asc(hero.complexity)
   };
 
   const filteringColumns: Record<string, PgColumn> = {
@@ -51,7 +51,7 @@ const GET = async (request: NextRequest) => {
     attackType: hero.attackType,
     role: heroRole.type,
     complexity: hero.complexity,
-    secondaryImageKey: hero.secondaryImageKey,
+    primaryImageKey: hero.primaryImageKey
   };
 
   const getQueryParams = (ordering: string[], filtering: string[]): any => {
@@ -69,14 +69,14 @@ const GET = async (request: NextRequest) => {
     return [targetOrderingColumns, targetFilteringColumns];
   };
 
-  const orderingParams = ["alias"];
+  const orderingParams = ['alias'];
   const filteringParams = [
-    "alias",
-    "primaryAttribute",
-    "attackType",
-    "role",
-    "complexity",
-    "secondaryImageKey",
+    'alias',
+    'primaryAttribute',
+    'attackType',
+    'role',
+    'complexity',
+    'primaryImageKey'
   ];
 
   const queryParams = getQueryParams(orderingParams, filteringParams);
@@ -95,7 +95,7 @@ const GET = async (request: NextRequest) => {
         attackType: row.attackType,
         primaryAttribute: row.primaryAttribute,
         roles: [row.role],
-        secondaryImageKey: row.secondaryImageKey,
+        primaryImageKey: row.primaryImageKey
       };
     } else {
       heroes[row.alias!].roles.push(row.role);
@@ -109,6 +109,8 @@ const GET = async (request: NextRequest) => {
       data.push(heroes[hero] as HeroCardType);
     }
   }
+
+  console.log(heroes);
 
   return NextResponse.json({ data });
 };

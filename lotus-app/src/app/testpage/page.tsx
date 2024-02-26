@@ -1,8 +1,13 @@
-"use client";
-import { useGetHeroesQuery } from "@/features/api/apiSlice";
-import { cn } from "@/lib/utils";
-import { createSelector } from "@reduxjs/toolkit";
-import { useMemo } from "react";
+'use client';
+import { useGetHeroesQuery } from '@/features/api/apiSlice';
+import { cn } from '@/lib/utils';
+import { createSelector } from '@reduxjs/toolkit';
+import { useMemo } from 'react';
+
+const attackTypeOrdering = {
+  Melee: 1,
+  Ranged: 2
+};
 
 const TestPage = () => {
   const {
@@ -10,7 +15,7 @@ const TestPage = () => {
     isLoading,
     isSuccess,
     isError,
-    error,
+    error
   } = useGetHeroesQuery(undefined);
 
   const selectOrderedHeroes = useMemo(
@@ -29,7 +34,7 @@ const TestPage = () => {
   return (
     <main>
       <button>Random Ordering</button>
-      <div className={cn("flex flex-wrap gap-32 p-28 justify-between")}></div>
+      <div className={cn('flex flex-wrap gap-32 p-28 justify-between')}></div>
     </main>
   );
 };
