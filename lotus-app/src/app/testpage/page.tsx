@@ -10,12 +10,12 @@ const orderingTypes: Record<string, Record<string, number>> = {
     Strength: 1,
     Agility: 2,
     Intelligence: 3,
-    Universal: 4,
+    Universal: 4
   },
 
   attackType: {
     Melee: 1,
-    Ranged: 2,
+    Ranged: 2
   },
 
   role: {
@@ -26,20 +26,20 @@ const orderingTypes: Record<string, Record<string, number>> = {
     Durable: 5,
     Escape: 6,
     Pusher: 7,
-    Initiator: 8,
+    Initiator: 8
   },
 
   complexity: {
     Simple: 1,
     Moderate: 2,
-    Complex: 3,
-  },
+    Complex: 3
+  }
 };
 
 const orderingTypeOptionAmounts: Record<string, number> = {
   primaryAttribute: 4,
   attackType: 2,
-  complexity: 3,
+  complexity: 3
 };
 
 const TestPage = () => {
@@ -48,7 +48,7 @@ const TestPage = () => {
     isLoading,
     isSuccess,
     isError,
-    error,
+    error
   } = useGetHeroesQuery(undefined);
 
   const [ordering, setOrdering] = useState<Set<string>>(new Set());
@@ -57,20 +57,20 @@ const TestPage = () => {
   >({
     primaryAttribute: {
       And: new Set(),
-      Or: new Set(),
+      Or: new Set()
     },
     attackType: {
       And: new Set(),
-      Or: new Set(),
+      Or: new Set()
     },
     roles: {
       And: new Set(),
-      Or: new Set(),
+      Or: new Set()
     },
     complexity: {
       And: new Set(),
-      Or: new Set(),
-    },
+      Or: new Set()
+    }
   });
 
   const orderedHeroes = useMemo(() => {
@@ -88,7 +88,7 @@ const TestPage = () => {
           nextOrderedGroups = [
             ...new Array(
               orderingTypeOptionAmounts[criteria] * prevOrderedGroups.length
-            ),
+            )
           ].map(() => []);
           prevOrderedGroups.forEach((group, idx) => {
             group.forEach((hero: HeroCardType) => {
@@ -157,48 +157,63 @@ const TestPage = () => {
 
   const filteredHeroes = useMemo(() => {
     if (heroes) {
-      let filteredHeroes = orderedHeroes?.slice();
-      // for (const criteria in filters) {
-      //   for (const condition in filters[criteria]) {
-      //     filters[criteria][condition].forEach((value: string) => {
-      //       if (condition === "And") {
-      //         filteredHeroes = filteredHeroes?.filter((hero: HeroCardType) =>
-      //           criteria === "roles"
-      //             ? hero[criteria].includes(value)
-      //             : hero[criteria] === value
-      //         );
-      //       }
-      //     });
-      //   }
-      // }
+      let filteredHeroes = [];
+      orderedHeroes?.forEach((hero) => {
+        filteredHeroes.push({ ...hero, good: true });
+      });
+      for (const criteria in filters)
+        for (const condition in filters[criteria])
+          filters[criteria][condition].forEach((value: string) => {
+            if (condition === "And") {
+              filteredHeroes?.forEach((hero) => {
+                hero.good =
+                  criteria === "roles"
+                    ? hero[criteria].includes(value)
+                    : hero[criteria] === value;
+                // console.log(hero.alias, hero.good);
+              });
+            }
+          });
+      filteredHeroes = filteredHeroes.filter((hero) => hero.good === true);
+      filteredHeroes.forEach((hero) => delete hero.good);
       return filteredHeroes;
     }
-  }, [heroes, orderedHeroes]);
-
-  // console.log(orderedHeroes);
+  }, [heroes, filters, orderedHeroes]);
 
   const handleOrderingButtonClick = (criteria: string) => {
-    if (!ordering.has(criteria)) {
-      setOrdering(new Set([...ordering, criteria]));
-    } else {
+    if (!ordering.has(criteria)) setOrdering(new Set([...ordering, criteria]));
+    else
       setOrdering(
         new Set([...ordering].filter((entry: string) => entry !== criteria))
       );
-    }
   };
 
-  // const handleFilteringButtonClick = (
-  //   criteria: string,
-  //   value: string,
-  //   condition: string
-  // ) => {
-  //   if (!(value in filters[criteria])) {
-  //     setFilters({
-  //       [criteria]: new Set([...filters[criteria], value]),
-  //       ...filters,
-  //     });
-  //   }
-  // };
+  const handleFilteringButtonClick = (
+    criteria: string,
+    condition: string,
+    value: string
+  ) => {
+    if (!filters[criteria][condition].has(value)) {
+      setFilters({
+        ...filters,
+        [criteria]: {
+          ...filters[criteria],
+          [condition]: new Set([...filters[criteria][condition], value])
+        }
+      });
+    } else
+      setFilters({
+        ...filters,
+        [criteria]: {
+          ...filters[criteria],
+          [condition]: new Set(
+            [...filters[criteria][condition]].filter(
+              (entry: string) => entry !== value
+            )
+          )
+        }
+      });
+  };
 
   return (
     <main>
@@ -223,6 +238,14 @@ const TestPage = () => {
       <Button
         variant="default"
         onClick={() => handleOrderingButtonClick("complexity")}
+      >
+        Complexity
+      </Button>
+      <Button
+        variant="outline"
+        onClick={() =>
+          handleFilteringButtonClick("complexity", "And", "Complex")
+        }
       >
         Complexity
       </Button>
