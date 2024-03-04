@@ -5,6 +5,7 @@ import { hero, heroRole } from "@/../drizzle/schema";
 import { HeroCard, type HeroCardType } from "@/lib/zod";
 
 const GET = async (request: NextRequest) => {
+  const searchParams = request.nextUrl.searchParams;
   const heroEntries = await db
     .select({
       alias: hero.alias,
@@ -35,15 +36,81 @@ const GET = async (request: NextRequest) => {
     }
   });
 
-  const data: HeroCardType[] = [];
+  const validHeroes: HeroCardType[] = [];
 
   for (const hero in heroes) {
     if (HeroCard.safeParse(heroes[hero]).success) {
-      data.push(heroes[hero] as HeroCardType);
+      validHeroes.push(heroes[hero] as HeroCardType);
     }
   }
 
-  return NextResponse.json({ data });
+  const data: Record<string, Array<HeroCardType>> = {};
+
+  switch (searchParams.get("order")) {
+    case "PrimaryAttribute":
+      data["Strength"] = validHeroes.filter(
+        (hero: HeroCardType) => hero.primaryAttribute === "Strength"
+      );
+      data["Agility"] = validHeroes.filter(
+        (hero: HeroCardType) => hero.primaryAttribute === "Agility"
+      );
+      data["Intelligence"] = validHeroes.filter(
+        (hero: HeroCardType) => hero.primaryAttribute === "Intelligence"
+      );
+      data["Universal"] = validHeroes.filter(
+        (hero: HeroCardType) => hero.primaryAttribute === "Universal"
+      );
+      break;
+    case "AttackType":
+      data["Melee"] = validHeroes.filter(
+        (hero: HeroCardType) => hero.attackType === "Melee"
+      );
+      data["Ranged"] = validHeroes.filter(
+        (hero: HeroCardType) => hero.attackType === "Ranged"
+      );
+      break;
+    case "Role":
+      data["Carry"] = validHeroes.filter((hero: HeroCardType) =>
+        hero.roles.includes("Carry")
+      );
+      data["Support"] = validHeroes.filter((hero: HeroCardType) =>
+        hero.roles.includes("Support")
+      );
+      data["Nuker"] = validHeroes.filter((hero: HeroCardType) =>
+        hero.roles.includes("Nuker")
+      );
+      data["Disabler"] = validHeroes.filter((hero: HeroCardType) =>
+        hero.roles.includes("Disabler")
+      );
+      data["Durable"] = validHeroes.filter((hero: HeroCardType) =>
+        hero.roles.includes("Durable")
+      );
+      data["Escape"] = validHeroes.filter((hero: HeroCardType) =>
+        hero.roles.includes("Escape")
+      );
+      data["Pusher"] = validHeroes.filter((hero: HeroCardType) =>
+        hero.roles.includes("Pusher")
+      );
+      data["Initiator"] = validHeroes.filter((hero: HeroCardType) =>
+        hero.roles.includes("Initiator")
+      );
+      break;
+    case "Complexity":
+      data["Simple"] = validHeroes.filter(
+        (hero: HeroCardType) => hero.complexity === "Simple"
+      );
+      data["Moderate"] = validHeroes.filter(
+        (hero: HeroCardType) => hero.complexity === "Moderate"
+      );
+      data["Complex"] = validHeroes.filter(
+        (hero: HeroCardType) => hero.complexity === "Complex"
+      );
+      break;
+    default:
+      data["heroes"] = validHeroes;
+  }
+
+  return NextResponse.json(data);
 };
 
 export { GET };

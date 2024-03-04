@@ -22,7 +22,13 @@ const RootLayout = ({
             rel="stylesheet"
           />
         </head>
-        <body className={cn("font-sans")}>{children}</body>
+        <body
+          className={cn(
+            "font-sans bg-gradient-radial from-gray-700 from-20% to-black to-90%"
+          )}
+        >
+          {children}
+        </body>
       </html>
     </StoreProvider>
   );

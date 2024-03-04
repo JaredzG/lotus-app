@@ -5,7 +5,10 @@ const apiSlice = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/" }),
   endpoints: (builder) => ({
     getHeroes: builder.query({
-      query: () => "/api/heroes",
+      query: ({ order }) => {
+        if (!order) return "/api/heroes";
+        return `/api/heroes?order=${order}`;
+      },
     }),
   }),
 });
