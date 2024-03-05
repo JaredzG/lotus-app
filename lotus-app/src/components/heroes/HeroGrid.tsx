@@ -1,6 +1,7 @@
+import gsap from "gsap";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { HeroCardType } from "@/lib/zod";
-import Image from "next/image";
 
 const cf = process.env.NEXT_PUBLIC_CF_DOMAIN;
 
@@ -14,13 +15,17 @@ const HeroGrid = ({
   return (
     <div
       className={cn(
-        "w-2/5 rounded-lg bg-gradient-to-r from-sky-500 to-fuchsia-500 p-1"
+        "w-full rounded-lg bg-gradient-to-r from-sky-500 to-fuchsia-500 p-1"
       )}
     >
-      <div className={cn("rounded-lg bg-black")}>
+      <div
+        className={cn(
+          "rounded-lg bg-gradient-radial from-gray-700 from-20% to-black to-80% bg-fixed p-4"
+        )}
+      >
         <div
           className={cn(
-            "font-bold text-4xl text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-pink-500 mb-3 px-3 py-2"
+            "w-min font-bold text-4xl text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-pink-500 mb-3 px-3 pb-2"
           )}
         >
           {category}

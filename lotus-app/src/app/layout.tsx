@@ -24,7 +24,7 @@ const RootLayout = ({
         </head>
         <body
           className={cn(
-            "font-sans bg-gradient-radial from-gray-700 from-20% to-black to-90%"
+            "font-sans bg-gradient-radial from-gray-700 from-20% to-black to-80% bg-fixed"
           )}
         >
           {children}

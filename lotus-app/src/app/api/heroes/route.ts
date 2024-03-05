@@ -47,7 +47,7 @@ const GET = async (request: NextRequest) => {
   const data: Record<string, Array<HeroCardType>> = {};
 
   switch (searchParams.get("order")) {
-    case "PrimaryAttribute":
+    case "Primary Attribute":
       data["Strength"] = validHeroes.filter(
         (hero: HeroCardType) => hero.primaryAttribute === "Strength"
       );
@@ -61,7 +61,7 @@ const GET = async (request: NextRequest) => {
         (hero: HeroCardType) => hero.primaryAttribute === "Universal"
       );
       break;
-    case "AttackType":
+    case "Attack Type":
       data["Melee"] = validHeroes.filter(
         (hero: HeroCardType) => hero.attackType === "Melee"
       );
@@ -107,7 +107,7 @@ const GET = async (request: NextRequest) => {
       );
       break;
     default:
-      data["heroes"] = validHeroes;
+      data["Heroes"] = validHeroes;
   }
 
   return NextResponse.json(data);

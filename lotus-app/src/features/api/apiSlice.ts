@@ -13,6 +13,6 @@ const apiSlice = createApi({
   }),
 });
 
-const { useGetHeroesQuery } = apiSlice;
+const { useGetHeroesQuery, useLazyGetHeroesQuery } = apiSlice;
 
-export { apiSlice, useGetHeroesQuery };
+export { apiSlice, useGetHeroesQuery, useLazyGetHeroesQuery };
