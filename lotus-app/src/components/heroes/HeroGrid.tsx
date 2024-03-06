@@ -1,4 +1,3 @@
-import gsap from "gsap";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { HeroCardType } from "@/lib/zod";
@@ -7,9 +6,11 @@ const cf = process.env.NEXT_PUBLIC_CF_DOMAIN;
 
 const HeroGrid = ({
   category,
+  filters,
   heroes,
 }: {
   category: string;
+  filters: Array<Record<string, string>>;
   heroes: HeroCardType[];
 }) => {
   return (
@@ -31,11 +32,11 @@ const HeroGrid = ({
           {category}
         </div>
         <div className={cn("flex flex-wrap justify-evenly gap-3")}>
-          {heroes?.map((hero: HeroCardType) => (
+          {heroes?.map((hero) => (
             <div
               key={hero.alias}
               className={cn(
-                "h-24 w-24 rounded-full border-transparent overflow-hidden"
+                "h-32 w-32 border-transparent overflow-hidden cursor-pointer hover:scale-110 transition-all flex justify-center items-center"
               )}
             >
               <Image
@@ -43,7 +44,20 @@ const HeroGrid = ({
                 alt={hero.alias}
                 height={640}
                 width={360}
-                className={cn("h-full w-full aspect-square")}
+                className={cn(
+                  filters.length > 0
+                    ? filters.every((filter) => {
+                        if (filter.category !== "roles")
+                          return hero[filter.category] === filter.criteria;
+                        else
+                          return hero[filter.category].includes(
+                            filter.criteria
+                          );
+                      })
+                      ? ""
+                      : "grayscale brightness-50"
+                    : ""
+                )}
               />
             </div>
           ))}
