@@ -8,7 +8,7 @@ const HeroFetchLoading = () => {
         "h-dvh w-dvh text-4xl font-bold flex justify-center items-center"
       )}
     >
-      <div className={cn("flex justify-center items-center gap-2")}>
+      <div className={cn("flex flex-col justify-center items-center gap-2")}>
         <CircularProgress sx={{ color: "#06b6d4" }} />
         <span
           className={cn(

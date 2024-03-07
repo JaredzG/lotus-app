@@ -36,7 +36,7 @@ const HeroGrid = ({
             <div
               key={hero.alias}
               className={cn(
-                "h-32 w-32 border-transparent overflow-hidden cursor-pointer hover:scale-110 transition-all flex justify-center items-center"
+                "h-40 w-40 border-transparent overflow-hidden cursor-pointer hover:scale-110 transition-all flex justify-center items-center"
               )}
             >
               <Image
