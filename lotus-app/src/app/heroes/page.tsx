@@ -1,11 +1,12 @@
 "use client";
+import { useState } from "react";
 import HeroGrid from "@/components/heroes/HeroGrid";
 import {
   useGetHeroesQuery,
   useLazyGetHeroesQuery,
 } from "@/features/api/apiSlice";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { FilterType } from "@/lib/zod";
 
 const orderCategories = [
   "None",
@@ -14,7 +15,11 @@ const orderCategories = [
   "Role",
   "Complexity",
 ];
-const filterCategories: Record<string, string[]> = {
+
+const filterCategories: Record<
+  FilterType["category"],
+  FilterType["criteria"][]
+> = {
   primaryAttribute: ["Strength", "Agility", "Intelligence", "Universal"],
   attackType: ["Melee", "Ranged"],
   roles: [
@@ -35,14 +40,17 @@ const Heroes = () => {
   const [trigger, result] = useLazyGetHeroesQuery();
 
   const [order, setOrder] = useState("None");
-  const [filters, setFilters] = useState<Array<Record<string, string>>>([]);
+  const [filters, setFilters] = useState<FilterType[]>([]);
 
   const onOrderClick = (order: string) => {
     trigger({ order });
     setOrder(order);
   };
 
-  const onFilterClick = (category: string, criteria: string) => {
+  const onFilterClick = (
+    category: FilterType["category"],
+    criteria: FilterType["criteria"]
+  ) => {
     if (
       !filters.some(
         (filter) => filter.category === category && filter.criteria === criteria
@@ -53,7 +61,7 @@ const Heroes = () => {
   };
 
   return (
-    <main>
+    <main className={cn("relative")}>
       <div className={cn("w-full px-4 py-2 fixed backdrop-blur-lg z-50")}>
         <ul className={cn("flex flex-wrap gap-2")}>
           {orderCategories.map((category) => (

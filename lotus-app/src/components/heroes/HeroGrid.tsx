@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { HeroCardType } from "@/lib/zod";
+import { FilterType, HeroType } from "@/lib/zod";
 
 const cf = process.env.NEXT_PUBLIC_CF_DOMAIN;
 
@@ -10,8 +10,8 @@ const HeroGrid = ({
   heroes,
 }: {
   category: string;
-  filters: Array<Record<string, string>>;
-  heroes: HeroCardType[];
+  filters: FilterType[];
+  heroes: HeroType[];
 }) => {
   return (
     <div

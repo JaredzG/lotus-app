@@ -7,7 +7,7 @@ import {
   heroRoleType,
 } from "@/../drizzle/schema";
 
-export const HeroCard = z
+export const Hero = z
   .object({
     alias: z.string(),
     primaryAttribute: z.enum(heroPrimaryAttribute.enumValues),
@@ -18,4 +18,16 @@ export const HeroCard = z
   })
   .required();
 
-export type HeroCardType = z.infer<typeof HeroCard>;
+export type HeroType = z.infer<typeof Hero>;
+
+export const Filter = z.object({
+  category: z.enum(["primaryAttribute", "attackType", "roles", "complexity"]),
+  criteria: z.enum([
+    ...heroPrimaryAttribute.enumValues,
+    ...heroAttackType.enumValues,
+    ...heroRoleType.enumValues,
+    ...heroComplexity.enumValues,
+  ]),
+});
+
+export type FilterType = z.infer<typeof Filter>;

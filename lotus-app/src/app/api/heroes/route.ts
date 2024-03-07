@@ -2,7 +2,7 @@ import { asc, eq } from "drizzle-orm";
 import { NextResponse, type NextRequest } from "next/server";
 import { db } from "@/lib/db";
 import { hero, heroRole } from "@/../drizzle/schema";
-import { HeroCard, type HeroCardType } from "@/lib/zod";
+import { Hero, type HeroType } from "@/lib/zod";
 
 const GET = async (request: NextRequest) => {
   const searchParams = request.nextUrl.searchParams;
@@ -36,74 +36,74 @@ const GET = async (request: NextRequest) => {
     }
   });
 
-  const validHeroes: HeroCardType[] = [];
+  const validHeroes: HeroType[] = [];
 
   for (const hero in heroes) {
-    if (HeroCard.safeParse(heroes[hero]).success) {
-      validHeroes.push(heroes[hero] as HeroCardType);
+    if (Hero.safeParse(heroes[hero]).success) {
+      validHeroes.push(heroes[hero] as HeroType);
     }
   }
 
-  const data: Record<string, Array<HeroCardType>> = {};
+  const data: Record<string, Array<HeroType>> = {};
 
   switch (searchParams.get("order")) {
     case "Primary Attribute":
       data["Strength"] = validHeroes.filter(
-        (hero: HeroCardType) => hero.primaryAttribute === "Strength"
+        (hero: HeroType) => hero.primaryAttribute === "Strength"
       );
       data["Agility"] = validHeroes.filter(
-        (hero: HeroCardType) => hero.primaryAttribute === "Agility"
+        (hero: HeroType) => hero.primaryAttribute === "Agility"
       );
       data["Intelligence"] = validHeroes.filter(
-        (hero: HeroCardType) => hero.primaryAttribute === "Intelligence"
+        (hero: HeroType) => hero.primaryAttribute === "Intelligence"
       );
       data["Universal"] = validHeroes.filter(
-        (hero: HeroCardType) => hero.primaryAttribute === "Universal"
+        (hero: HeroType) => hero.primaryAttribute === "Universal"
       );
       break;
     case "Attack Type":
       data["Melee"] = validHeroes.filter(
-        (hero: HeroCardType) => hero.attackType === "Melee"
+        (hero: HeroType) => hero.attackType === "Melee"
       );
       data["Ranged"] = validHeroes.filter(
-        (hero: HeroCardType) => hero.attackType === "Ranged"
+        (hero: HeroType) => hero.attackType === "Ranged"
       );
       break;
     case "Role":
-      data["Carry"] = validHeroes.filter((hero: HeroCardType) =>
+      data["Carry"] = validHeroes.filter((hero: HeroType) =>
         hero.roles.includes("Carry")
       );
-      data["Support"] = validHeroes.filter((hero: HeroCardType) =>
+      data["Support"] = validHeroes.filter((hero: HeroType) =>
         hero.roles.includes("Support")
       );
-      data["Nuker"] = validHeroes.filter((hero: HeroCardType) =>
+      data["Nuker"] = validHeroes.filter((hero: HeroType) =>
         hero.roles.includes("Nuker")
       );
-      data["Disabler"] = validHeroes.filter((hero: HeroCardType) =>
+      data["Disabler"] = validHeroes.filter((hero: HeroType) =>
         hero.roles.includes("Disabler")
       );
-      data["Durable"] = validHeroes.filter((hero: HeroCardType) =>
+      data["Durable"] = validHeroes.filter((hero: HeroType) =>
         hero.roles.includes("Durable")
       );
-      data["Escape"] = validHeroes.filter((hero: HeroCardType) =>
+      data["Escape"] = validHeroes.filter((hero: HeroType) =>
         hero.roles.includes("Escape")
       );
-      data["Pusher"] = validHeroes.filter((hero: HeroCardType) =>
+      data["Pusher"] = validHeroes.filter((hero: HeroType) =>
         hero.roles.includes("Pusher")
       );
-      data["Initiator"] = validHeroes.filter((hero: HeroCardType) =>
+      data["Initiator"] = validHeroes.filter((hero: HeroType) =>
         hero.roles.includes("Initiator")
       );
       break;
     case "Complexity":
       data["Simple"] = validHeroes.filter(
-        (hero: HeroCardType) => hero.complexity === "Simple"
+        (hero: HeroType) => hero.complexity === "Simple"
       );
       data["Moderate"] = validHeroes.filter(
-        (hero: HeroCardType) => hero.complexity === "Moderate"
+        (hero: HeroType) => hero.complexity === "Moderate"
       );
       data["Complex"] = validHeroes.filter(
-        (hero: HeroCardType) => hero.complexity === "Complex"
+        (hero: HeroType) => hero.complexity === "Complex"
       );
       break;
     default:
