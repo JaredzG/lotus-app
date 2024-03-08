@@ -38,7 +38,7 @@ const filterCategories: Record<
   complexity: ["Simple", "Moderate", "Complex"]
 };
 
-const Heroes = () => {
+const HeroesPage = () => {
   const initialResult = useGetHeroesQuery({ order: null });
   const [trigger, result] = useLazyGetHeroesQuery();
 
@@ -88,4 +88,4 @@ const Heroes = () => {
   );
 };
 
-export default Heroes;
+export default HeroesPage;
