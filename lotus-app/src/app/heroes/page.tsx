@@ -2,7 +2,7 @@
 import { useState } from "react";
 import {
   useGetHeroesQuery,
-  useLazyGetHeroesQuery,
+  useLazyGetHeroesQuery
 } from "@/features/api/apiSlice";
 import { cn } from "@/lib/utils";
 import { FilterType } from "@/lib/zod";
@@ -16,7 +16,7 @@ const orderCategories = [
   "Primary Attribute",
   "Attack Type",
   "Role",
-  "Complexity",
+  "Complexity"
 ];
 
 const filterCategories: Record<
@@ -33,9 +33,9 @@ const filterCategories: Record<
     "Durable",
     "Escape",
     "Pusher",
-    "Initiator",
+    "Initiator"
   ],
-  complexity: ["Simple", "Moderate", "Complex"],
+  complexity: ["Simple", "Moderate", "Complex"]
 };
 
 const Heroes = () => {
