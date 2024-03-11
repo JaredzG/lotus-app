@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { db } from "@/lib/db";
 import { hero, heroRole } from "@/../drizzle/schema";
 import { Hero, type HeroType } from "@/lib/zod";
+import { heroPrimaryAttribute, heroAttackType, heroRoleType, heroComplexity } from "@/../drizzle/schema";
 
 const GET = async (request: NextRequest) => {
   const searchParams = request.nextUrl.searchParams;
@@ -21,7 +22,7 @@ const GET = async (request: NextRequest) => {
 
   const heroes: Record<string, any> = {};
 
-  heroEntries.forEach((hero) => {
+  for (const hero of heroEntries) {
     if (heroes[hero.alias!] === undefined) {
       heroes[hero.alias!] = {
         alias: hero.alias,
@@ -34,7 +35,7 @@ const GET = async (request: NextRequest) => {
     } else {
       heroes[hero.alias!].roles.push(hero.roleType);
     }
-  });
+  }
 
   const validHeroes: HeroType[] = [];
 
@@ -48,63 +49,24 @@ const GET = async (request: NextRequest) => {
 
   switch (searchParams.get("order")) {
     case "Primary Attribute":
-      data["Strength"] = validHeroes.filter(
-        (hero: HeroType) => hero.primaryAttribute === "Strength"
-      );
-      data["Agility"] = validHeroes.filter(
-        (hero: HeroType) => hero.primaryAttribute === "Agility"
-      );
-      data["Intelligence"] = validHeroes.filter(
-        (hero: HeroType) => hero.primaryAttribute === "Intelligence"
-      );
-      data["Universal"] = validHeroes.filter(
-        (hero: HeroType) => hero.primaryAttribute === "Universal"
-      );
+      for (const value of heroPrimaryAttribute.enumValues) {
+        data[value] = validHeroes.filter((hero: HeroType) => hero.primaryAttribute === value)
+      }
       break;
     case "Attack Type":
-      data["Melee"] = validHeroes.filter(
-        (hero: HeroType) => hero.attackType === "Melee"
-      );
-      data["Ranged"] = validHeroes.filter(
-        (hero: HeroType) => hero.attackType === "Ranged"
-      );
+      for (const value of heroAttackType.enumValues) {
+        data[value] = validHeroes.filter((hero: HeroType) => hero.attackType === value)
+      }
       break;
     case "Role":
-      data["Carry"] = validHeroes.filter((hero: HeroType) =>
-        hero.roles.includes("Carry")
-      );
-      data["Support"] = validHeroes.filter((hero: HeroType) =>
-        hero.roles.includes("Support")
-      );
-      data["Nuker"] = validHeroes.filter((hero: HeroType) =>
-        hero.roles.includes("Nuker")
-      );
-      data["Disabler"] = validHeroes.filter((hero: HeroType) =>
-        hero.roles.includes("Disabler")
-      );
-      data["Durable"] = validHeroes.filter((hero: HeroType) =>
-        hero.roles.includes("Durable")
-      );
-      data["Escape"] = validHeroes.filter((hero: HeroType) =>
-        hero.roles.includes("Escape")
-      );
-      data["Pusher"] = validHeroes.filter((hero: HeroType) =>
-        hero.roles.includes("Pusher")
-      );
-      data["Initiator"] = validHeroes.filter((hero: HeroType) =>
-        hero.roles.includes("Initiator")
-      );
+      for (const value of heroRoleType.enumValues) {
+        data[value] = validHeroes.filter((hero: HeroType) => hero.roles.includes(value))
+      }
       break;
     case "Complexity":
-      data["Simple"] = validHeroes.filter(
-        (hero: HeroType) => hero.complexity === "Simple"
-      );
-      data["Moderate"] = validHeroes.filter(
-        (hero: HeroType) => hero.complexity === "Moderate"
-      );
-      data["Complex"] = validHeroes.filter(
-        (hero: HeroType) => hero.complexity === "Complex"
-      );
+      for (const value of heroComplexity.enumValues) {
+        data[value] = validHeroes.filter((hero: HeroType) => hero.complexity === value)
+      }
       break;
     default:
       data["Heroes"] = validHeroes;
