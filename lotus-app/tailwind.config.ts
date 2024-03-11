@@ -19,6 +19,9 @@ const config = {
       },
     },
     extend: {
+      transitionProperty: {
+        "bg": "background-color",
+      },
       fontFamily: {
         sans: ["Satoshi", ...fontFamily.sans],
       },

@@ -18,7 +18,7 @@ const HeroFilterCategory = ({
   return (
     <li
       className={cn(
-        "text-white font-medium px-2 py-1 rounded-lg cursor-pointer select-none transition-colors hover:bg-gray-700",
+        "text-white font-medium px-2 py-1 rounded-lg cursor-pointer select-none transition-bg hover:bg-gray-700",
         filters.some(
           (filter: Record<string, string>) =>
             filter.category === category && filter.criteria === criteria
