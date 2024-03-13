@@ -9,6 +9,7 @@ import {
   type ItemType,
 } from "@/lib/zod";
 import { type DataType } from "@/lib/types";
+import HeroItem from "../heroes/HeroItem";
 
 const cf = process.env.NEXT_PUBLIC_CF_DOMAIN;
 
@@ -28,24 +29,7 @@ const DataItem = ({
       )}
     >
       {dataType === "Heroes" ? (
-        <Image
-          src={`${cf}${dataItem.primaryImageKey}`}
-          alt={dataItem.alias}
-          height={640}
-          width={360}
-          className={cn(
-            filters.length > 0
-              ? filters.every((filter) => {
-                  if (filter.category !== "roles")
-                    return dataItem[filter.category] === filter.criteria;
-                  else
-                    return dataItem[filter.category].includes(filter.criteria);
-                })
-                ? ""
-                : "grayscale brightness-50"
-              : ""
-          )}
-        />
+        <HeroItem hero={dataItem} filters={filters} />
       ) : (
         <Image
           src={`${cf}${dataItem.imageKey}`}

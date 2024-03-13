@@ -6,10 +6,10 @@ import {
 } from "@/features/api/apiSlice";
 import { cn } from "@/lib/utils";
 import { type HeroFilterType } from "@/lib/zod";
-import OrderBar from "@/components/heroes/OrderBar";
-import FilterBar from "@/components/heroes/FilterBar";
-import Fetching from "@/components/heroes/Fetching";
-import GridsContainer from "@/components/heroes/GridsContainer";
+import OrderBar from "@/components/grid/OrderBar";
+import FilterBar from "@/components/grid/FilterBar";
+import Fetching from "@/components/grid/Fetching";
+import GridsContainer from "@/components/grid/GridsContainer";
 
 const orderCategories = [
   "None",

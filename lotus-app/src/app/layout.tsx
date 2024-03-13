@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { cn } from "../lib/utils";
 import StoreProvider from "@/components/StoreProvider";
+import SmoothScrolling from "@/components/SmoothScrolling";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -27,7 +28,7 @@ const RootLayout = ({
             "font-sans bg-gradient-radial from-gray-700 from-20% to-black to-80% bg-fixed"
           )}
         >
-          {children}
+          <SmoothScrolling>{children}</SmoothScrolling>
         </body>
       </html>
     </StoreProvider>

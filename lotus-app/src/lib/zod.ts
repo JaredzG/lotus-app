@@ -12,6 +12,7 @@ import {
 export const Hero = z
   .object({
     alias: z.string(),
+    name: z.string(),
     primaryAttribute: z.enum(heroPrimaryAttribute.enumValues),
     attackType: z.enum(heroAttackType.enumValues),
     roles: z.array(z.enum(heroRoleType.enumValues)),
