@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import DataGrid from "./DataGrid";
-import { HeroFilterType, ItemFilterType } from "@/lib/zod";
+import { type HeroFilterType, type ItemFilterType } from "@/lib/zod";
 import { type DataType } from "@/lib/types";
 
 const GridsContainer = ({

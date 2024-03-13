@@ -2,7 +2,6 @@
 import { useState } from "react";
 import {
   useGetItemsQuery,
-  useLazyGetHeroesQuery,
   useLazyGetItemsQuery,
 } from "@/features/api/apiSlice";
 import { cn } from "@/lib/utils";
