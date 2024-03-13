@@ -10,9 +10,26 @@ const apiSlice = createApi({
         return `/api/heroes?order=${order}`;
       },
     }),
+    getItems: builder.query({
+      query: ({ order }) => {
+        if (!order) return "/api/items";
+        return `/api/items?order=${order}`;
+      },
+    }),
   }),
 });
 
-const { useGetHeroesQuery, useLazyGetHeroesQuery } = apiSlice;
+const {
+  useGetHeroesQuery,
+  useLazyGetHeroesQuery,
+  useGetItemsQuery,
+  useLazyGetItemsQuery,
+} = apiSlice;
 
-export { apiSlice, useGetHeroesQuery, useLazyGetHeroesQuery };
+export {
+  apiSlice,
+  useGetHeroesQuery,
+  useLazyGetHeroesQuery,
+  useGetItemsQuery,
+  useLazyGetItemsQuery,
+};

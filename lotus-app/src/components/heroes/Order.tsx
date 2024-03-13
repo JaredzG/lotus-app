@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-const HeroOrderCategory = ({
+const Order = ({
   category,
   order,
   onOrderClick,
@@ -24,4 +24,4 @@ const HeroOrderCategory = ({
   );
 };
 
-export default HeroOrderCategory;
+export default Order;

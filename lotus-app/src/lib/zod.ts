@@ -5,6 +5,8 @@ import {
   heroComplexity,
   heroPrimaryAttribute,
   heroRoleType,
+  itemType,
+  itemClassification,
 } from "@/../drizzle/schema";
 
 export const Hero = z
@@ -20,7 +22,7 @@ export const Hero = z
 
 export type HeroType = z.infer<typeof Hero>;
 
-export const Filter = z.object({
+export const HeroFilter = z.object({
   category: z.enum(["primaryAttribute", "attackType", "roles", "complexity"]),
   criteria: z.enum([
     ...heroPrimaryAttribute.enumValues,
@@ -30,4 +32,42 @@ export const Filter = z.object({
   ]),
 });
 
-export type FilterType = z.infer<typeof Filter>;
+export type HeroFilterType = z.infer<typeof HeroFilter>;
+
+export const Item = z
+  .object({
+    name: z.string(),
+    type: z.enum(itemType.enumValues),
+    classification: z.enum(itemClassification.enumValues),
+    hasStats: z.boolean(),
+    hasAbilities: z.boolean(),
+    hasPrices: z.boolean(),
+    isComponent: z.boolean(),
+    hasComponents: z.boolean(),
+    hasRecipe: z.boolean(),
+    imageKey: z.string(),
+  })
+  .required();
+
+export type ItemType = z.infer<typeof Item>;
+
+export const ItemFilter = z.object({
+  category: z.enum([
+    "hasStats",
+    "hasAbilities",
+    "hasPrices",
+    "isComponent",
+    "hasComponents",
+    "hasRecipe",
+  ]),
+  display: z.enum([
+    "Has Stats",
+    "Has Abilities",
+    "Has Prices",
+    "Is Component",
+    "Has Components",
+    "Has Recipe",
+  ]),
+});
+
+export type ItemFilterType = z.infer<typeof ItemFilter>;

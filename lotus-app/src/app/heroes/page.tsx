@@ -2,26 +2,26 @@
 import { useState } from "react";
 import {
   useGetHeroesQuery,
-  useLazyGetHeroesQuery
+  useLazyGetHeroesQuery,
 } from "@/features/api/apiSlice";
 import { cn } from "@/lib/utils";
-import { FilterType } from "@/lib/zod";
-import HeroOrderCategoryBar from "@/components/heroes/HeroOrderCategoryBar";
-import HeroFilterCategoryBar from "@/components/heroes/HeroFilterCategoryBar";
-import HeroFetchLoading from "@/components/heroes/HeroFetchLoading";
-import HeroGridsContainer from "@/components/heroes/HeroGridsContainer";
+import { type HeroFilterType } from "@/lib/zod";
+import OrderBar from "@/components/heroes/OrderBar";
+import FilterBar from "@/components/heroes/FilterBar";
+import Fetching from "@/components/heroes/Fetching";
+import GridsContainer from "@/components/heroes/GridsContainer";
 
 const orderCategories = [
   "None",
   "Primary Attribute",
   "Attack Type",
   "Role",
-  "Complexity"
+  "Complexity",
 ];
 
 const filterCategories: Record<
-  FilterType["category"],
-  FilterType["criteria"][]
+  HeroFilterType["category"],
+  HeroFilterType["criteria"][]
 > = {
   primaryAttribute: ["Strength", "Agility", "Intelligence", "Universal"],
   attackType: ["Melee", "Ranged"],
@@ -33,9 +33,9 @@ const filterCategories: Record<
     "Durable",
     "Escape",
     "Pusher",
-    "Initiator"
+    "Initiator",
   ],
-  complexity: ["Simple", "Moderate", "Complex"]
+  complexity: ["Simple", "Moderate", "Complex"],
 };
 
 const HeroesPage = () => {
@@ -43,7 +43,7 @@ const HeroesPage = () => {
   const [trigger, result] = useLazyGetHeroesQuery();
 
   const [order, setOrder] = useState("None");
-  const [filters, setFilters] = useState<FilterType[]>([]);
+  const [filters, setFilters] = useState<HeroFilterType[]>([]);
 
   const onOrderClick = (order: string) => {
     trigger({ order });
@@ -51,8 +51,8 @@ const HeroesPage = () => {
   };
 
   const onFilterClick = (
-    category: FilterType["category"],
-    criteria: FilterType["criteria"]
+    category: HeroFilterType["category"],
+    criteria: HeroFilterType["criteria"]
   ) => {
     if (
       !filters.some(
@@ -65,21 +65,30 @@ const HeroesPage = () => {
 
   return (
     <main className={cn("relative")}>
-      <HeroOrderCategoryBar
+      <OrderBar
         orderCategories={orderCategories}
         order={order}
         onOrderClick={onOrderClick}
       />
       {result.status !== "uninitialized"
-        ? (result.isFetching && <HeroFetchLoading />) ||
+        ? (result.isFetching && <Fetching dataType="Heroes" />) ||
           (!result.isFetching && (
-            <HeroGridsContainer result={result} filters={filters} />
+            <GridsContainer
+              dataType="Heroes"
+              result={result}
+              filters={filters}
+            />
           ))
-        : (initialResult.isFetching && <HeroFetchLoading />) ||
+        : (initialResult.isFetching && <Fetching dataType="Heroes" />) ||
           (!initialResult.isFetching && (
-            <HeroGridsContainer result={initialResult} filters={filters} />
+            <GridsContainer
+              dataType="Heroes"
+              result={initialResult}
+              filters={filters}
+            />
           ))}
-      <HeroFilterCategoryBar
+      <FilterBar
+        dataType="Heroes"
         filterCategories={filterCategories}
         filters={filters}
         onFilterClick={onFilterClick}

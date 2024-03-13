@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
-import HeroOrderCategory from "./HeroOrderCategory";
+import Order from "./Order";
 
-const HeroOrderCategoryBar = ({
+const OrderBar = ({
   orderCategories,
   order,
   onOrderClick,
@@ -13,9 +13,9 @@ const HeroOrderCategoryBar = ({
   return (
     <div className={cn("w-full px-4 py-2 fixed backdrop-blur-lg z-50")}>
       <ul className={cn("flex flex-wrap gap-2")}>
-        {orderCategories.map((category) => (
-          <HeroOrderCategory
-            key={category}
+        {orderCategories.map((category, idx) => (
+          <Order
+            key={idx}
             category={category}
             order={order}
             onOrderClick={onOrderClick}
@@ -26,4 +26,4 @@ const HeroOrderCategoryBar = ({
   );
 };
 
-export default HeroOrderCategoryBar;
+export default OrderBar;

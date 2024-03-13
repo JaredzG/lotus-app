@@ -1,10 +1,13 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import { cn } from "@/lib/utils";
+import { type DataType } from "@/lib/types";
 
-const HeroFetchLoading = () => {
+const Fetching = ({ dataType }: { dataType: DataType }) => {
   return (
     <div
-      className={cn("h-dvh w-dvh text-4xl font-bold flex justify-center items-center")}
+      className={cn(
+        "h-dvh w-dvh text-4xl font-bold flex justify-center items-center"
+      )}
     >
       <div className={cn("flex flex-col justify-center items-center gap-2")}>
         <CircularProgress
@@ -16,11 +19,11 @@ const HeroFetchLoading = () => {
             "h-12 uppercase text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-yellow-500 flex justify-center items-center"
           )}
         >
-          Fetching Heroes...
+          {`Fetching ${dataType}`}
         </span>
       </div>
     </div>
   );
 };
 
-export default HeroFetchLoading;
+export default Fetching;
