@@ -13,7 +13,11 @@ const GridsContainer = ({
   filters: HeroFilterType[] | ItemFilterType[];
 }) => {
   return (
-    <div className={cn("flex flex-wrap gap-5 p-28 justify-evenly items-start")}>
+    <div
+      className={cn(
+        "flex flex-wrap gap-5 px-28 py-20 justify-evenly items-start"
+      )}
+    >
       {Object.keys(result.data).map((category, idx) => (
         <DataGrid
           key={idx}
