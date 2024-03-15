@@ -1,11 +1,13 @@
 import { cn } from "@/lib/utils";
 
 const Order = ({
-  category,
+  categoryValue,
+  categoryDisplay,
   order,
   onOrderClick,
 }: {
-  category: string;
+  categoryValue: string;
+  categoryDisplay: string;
   order: string;
   onOrderClick: (order: string) => void;
 }) => {
@@ -13,13 +15,13 @@ const Order = ({
     <li
       className={cn(
         "text-white font-medium px-2 py-1 rounded-lg cursor-pointer select-none transition-bg hover:bg-gray-700",
-        order === category
+        order === categoryValue
           ? "bg-gradient-to-r from-cyan-500 to-emerald-500 text-black"
           : ""
       )}
-      onClick={() => onOrderClick(category)}
+      onClick={() => onOrderClick(categoryValue)}
     >
-      {category}
+      {categoryDisplay}
     </li>
   );
 };

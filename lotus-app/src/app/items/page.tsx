@@ -11,18 +11,49 @@ import FilterBar from "@/components/grid/FilterBar";
 import Fetching from "@/components/grid/Fetching";
 import GridsContainer from "@/components/grid/GridsContainer";
 
-const orderCategories = ["None", "Type", "Classification"];
+const orderCategories = {
+  None: "None",
+  Type: "Type",
+  Classification: "Classification",
+  [`${String.fromCodePoint(0x2b06)} Purchase ${String.fromCodePoint(0x1f4b0)}`]:
+    "Increasing Purchase Price",
+  [`${String.fromCodePoint(0x2b07)} Purchase ${String.fromCodePoint(0x1f4b0)}`]:
+    "Decreasing Purchase Price",
+  [`${String.fromCodePoint(0x2b06)} Sell ${String.fromCodePoint(0x1f4b0)}`]:
+    "Increasing Sell Value",
+  [`${String.fromCodePoint(0x2b07)} Sell ${String.fromCodePoint(0x1f4b0)}`]:
+    "Decreasing Sell Value",
+};
 
 const filterCategories: Record<
   ItemFilterType["category"],
-  ItemFilterType["display"]
+  ItemFilterType["criteria"][]
 > = {
-  hasStats: "Has Stats",
-  hasAbilities: "Has Abilities",
-  hasPrices: "Has Prices",
-  isComponent: "Is Component",
-  hasComponents: "Has Components",
-  hasRecipe: "Has Recipe",
+  type: ["Basic", "Upgrade", "Neutral"],
+  classification: [
+    "Consumables",
+    "Attributes",
+    "Equipment",
+    "Miscellaneous",
+    "Secret",
+    "Accessories",
+    "Support",
+    "Magical",
+    "Armor",
+    "Weapons",
+    "Artifacts",
+    "Tier 1",
+    "Tier 2",
+    "Tier 3",
+    "Tier 4",
+    "Tier 5",
+  ],
+  hasStats: ["Has Stats"],
+  hasAbilities: ["Has Abilities"],
+  hasPrices: ["Has Prices"],
+  isComponent: ["Is Component"],
+  hasComponents: ["Has Components"],
+  hasRecipe: ["Has Recipe"],
 };
 
 const ItemsPage = () => {
@@ -39,12 +70,18 @@ const ItemsPage = () => {
 
   const onFilterClick = (
     category: ItemFilterType["category"],
-    display: ItemFilterType["display"]
+    criteria: ItemFilterType["criteria"]
   ) => {
-    if (!filters.some((filter) => filter.category === category))
-      setFilters([...filters, { category, display }]);
-    else setFilters(filters.filter((filter) => filter.category !== category));
+    if (
+      !filters.some(
+        (filter) => filter.category === category && filter.criteria === criteria
+      )
+    )
+      setFilters([...filters, { category, criteria }]);
+    else setFilters(filters.filter((filter) => filter.criteria !== criteria));
   };
+
+  console.log(initialResult.data);
 
   return (
     <main className={cn("relative")}>

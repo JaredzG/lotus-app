@@ -8,18 +8,16 @@ const Filter = ({
   dataType,
   category,
   criteria,
-  display,
   filters,
   onFilterClick,
 }: {
   dataType: DataType;
   category: string;
   criteria: string | null;
-  display: string | null;
   filters: HeroFilterType[] | ItemFilterType[];
   onFilterClick: (
     category: HeroFilterType["category"] | ItemFilterType["category"],
-    criteria: HeroFilterType["criteria"] | ItemFilterType["display"]
+    criteria: HeroFilterType["criteria"] | ItemFilterType["criteria"]
   ) => void | ((category: ItemFilterType["category"]) => void);
 }) => {
   return (
@@ -28,21 +26,16 @@ const Filter = ({
         "text-white font-medium px-2 py-1 rounded-lg cursor-pointer select-none transition-bg hover:bg-gray-700",
         filters.some((filter) => {
           if (filter.category === category) {
-            if (dataType === "Heroes") return filter.criteria === criteria;
-            return true;
+            return filter.criteria === criteria;
           }
           return false;
         })
           ? "bg-gradient-to-r from-red-500 to-yellow-500 text-black"
           : ""
       )}
-      onClick={() =>
-        dataType === "Heroes"
-          ? onFilterClick(category, criteria)
-          : onFilterClick(category, display)
-      }
+      onClick={() => onFilterClick(category, criteria)}
     >
-      {dataType === "Heroes" ? criteria : display}
+      {criteria}
     </li>
   );
 };

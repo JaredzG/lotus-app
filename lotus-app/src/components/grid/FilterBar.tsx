@@ -12,11 +12,11 @@ const FilterBar = ({
   dataType: DataType;
   filterCategories:
     | Record<HeroFilterType["category"], HeroFilterType["criteria"][]>
-    | Record<ItemFilterType["category"], string>;
+    | Record<ItemFilterType["category"], ItemFilterType["criteria"][]>;
   filters: HeroFilterType[] | ItemFilterType[];
   onFilterClick: (
     category: HeroFilterType["category"] | ItemFilterType["category"],
-    criteria: HeroFilterType["criteria"] | string
+    criteria: HeroFilterType["criteria"] | ItemFilterType["criteria"]
   ) => void;
 }) => {
   return (
@@ -27,29 +27,16 @@ const FilterBar = ({
     >
       <ul className={cn("flex flex-wrap gap-2")}>
         {Object.keys(filterCategories).map((category, idx) =>
-          dataType === "Heroes" ? (
-            filterCategories[category].map((criteria: string, idx: number) => (
-              <Filter
-                key={idx}
-                dataType={dataType}
-                category={category}
-                criteria={criteria}
-                display={null}
-                filters={filters}
-                onFilterClick={onFilterClick}
-              />
-            ))
-          ) : (
+          filterCategories[category].map((criteria: string, idx: number) => (
             <Filter
               key={idx}
               dataType={dataType}
               category={category}
-              criteria={null}
-              display={filterCategories[category]}
+              criteria={criteria}
               filters={filters}
               onFilterClick={onFilterClick}
             />
-          )
+          ))
         )}
       </ul>
     </div>

@@ -11,13 +11,13 @@ import FilterBar from "@/components/grid/FilterBar";
 import Fetching from "@/components/grid/Fetching";
 import GridsContainer from "@/components/grid/GridsContainer";
 
-const orderCategories = [
-  "None",
-  "Primary Attribute",
-  "Attack Type",
-  "Role",
-  "Complexity",
-];
+const orderCategories = {
+  None: "None",
+  "Primary Attribute": "Primary Attribute",
+  "Attack Type": "Attack Type",
+  Role: "Role",
+  Complexity: "Complexity",
+};
 
 const filterCategories: Record<
   HeroFilterType["category"],

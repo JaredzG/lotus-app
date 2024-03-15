@@ -6,6 +6,7 @@ import { type ItemFilterType, type ItemType } from "@/lib/zod";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -22,6 +23,16 @@ const ItemItem = ({
   item: ItemType;
   filters: ItemFilterType[];
 }) => {
+  const itemPurchasePrice = item.prices
+    ? parseFloat(item.prices[0].amount!)
+    : null;
+  const itemSellPrice =
+    item.prices !== null
+      ? item.prices[1].amount !== null
+        ? parseFloat(item.prices[1].amount)
+        : null
+      : null;
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -33,7 +44,11 @@ const ItemItem = ({
             width={440}
             className={cn(
               filters.length > 0
-                ? filters.every((filter) => item[filter.category])
+                ? filters.every(
+                    (filter) =>
+                      item[filter.category] === true ||
+                      item[filter.category] === filter.criteria
+                  )
                   ? ""
                   : "grayscale brightness-50"
                 : ""
@@ -51,6 +66,44 @@ const ItemItem = ({
             className={cn("w-1/2 aspect-auto")}
           />
           <DialogTitle className={cn("text-white")}>{item.name}</DialogTitle>
+          <DialogDescription>
+            {item.prices ? (
+              <div className={cn("flex gap-3")}>
+                <span className={cn("text-yellow-500")}>
+                  Purchase Cost:&nbsp;
+                  <span className={cn("font-semibold text-white")}>
+                    {itemPurchasePrice !== null &&
+                      `${itemPurchasePrice.toString()} ${item.prices[0].unit}`}
+                  </span>
+                </span>
+                <span className={cn("text-yellow-500")}>
+                  Sell Value:&nbsp;
+                  <span className={cn("font-semibold text-white")}>
+                    {itemSellPrice !== null ? (
+                      itemSellPrice === Math.floor(itemSellPrice) ? (
+                        `${itemSellPrice.toString()} ${item.prices[1].unit}`
+                      ) : (
+                        `${item.prices[1].amount} ${item.prices[1].unit}`
+                      )
+                    ) : (
+                      <span
+                        className={cn("text-white font-semibold")}
+                      >{`${String.fromCodePoint(0x274c)} Sellable`}</span>
+                    )}
+                  </span>
+                </span>
+              </div>
+            ) : (
+              <div className={cn("flex gap-3")}>
+                <span
+                  className={cn("text-white font-semibold")}
+                >{`${String.fromCodePoint(0x274c)} Purchasable`}</span>
+                <span
+                  className={cn("text-white font-semibold")}
+                >{`${String.fromCodePoint(0x274c)} Sellable`}</span>
+              </div>
+            )}
+          </DialogDescription>
         </DialogHeader>
         <div
           className={cn(
@@ -60,7 +113,10 @@ const ItemItem = ({
           {Object.keys(item).map((property) => {
             if (property === "type")
               return (
-                <p className={cn("text-gray-200")}>
+                <p
+                  key={`${item.name} ${property}`}
+                  className={cn("text-gray-200")}
+                >
                   Type:&nbsp;
                   <span className={cn("font-semibold text-white")}>
                     {item.type}
@@ -69,7 +125,10 @@ const ItemItem = ({
               );
             else if (property === "classification")
               return (
-                <p className={cn("text-gray-200")}>
+                <p
+                  key={`${item.name} ${property}`}
+                  className={cn("text-gray-200")}
+                >
                   Classification:&nbsp;
                   <span className={cn("font-semibold text-white")}>
                     {item.classification}
@@ -85,7 +144,7 @@ const ItemItem = ({
                   {item[property] === true ? (
                     <span className={cn("text-green-500")}>Has</span>
                   ) : (
-                    <span className={cn("text-red-500")}>Does not have</span>
+                    <span className={cn("text-red-400")}>Does not have</span>
                   )}
                   &nbsp;Stats
                 </p>
@@ -99,7 +158,7 @@ const ItemItem = ({
                   {item[property] === true ? (
                     <span className={cn("text-green-500")}>Has</span>
                   ) : (
-                    <span className={cn("text-red-500")}>Does not have</span>
+                    <span className={cn("text-red-400")}>Does not have</span>
                   )}
                   &nbsp;Abilities
                 </p>
@@ -113,7 +172,7 @@ const ItemItem = ({
                   {item[property] === true ? (
                     <span className={cn("text-green-500")}>Is</span>
                   ) : (
-                    <span className={cn("text-red-500")}>Is not</span>
+                    <span className={cn("text-red-400")}>Is not</span>
                   )}
                   &nbsp;Component
                 </p>
@@ -127,7 +186,7 @@ const ItemItem = ({
                   {item[property] === true ? (
                     <span className={cn("text-green-500")}>Has</span>
                   ) : (
-                    <span className={cn("text-red-500")}>Does not have</span>
+                    <span className={cn("text-red-400")}>Does not have</span>
                   )}
                   &nbsp;Components
                 </p>
@@ -141,69 +200,12 @@ const ItemItem = ({
                   {item[property] === true ? (
                     <span className={cn("text-green-500")}>Has</span>
                   ) : (
-                    <span className={cn("text-red-500")}>Does not have</span>
+                    <span className={cn("text-red-400")}>Does not have</span>
                   )}
                   &nbsp;Recipe
                 </p>
               );
             }
-            // else if (property === "roles")
-            //   return (
-            //     <div key={`${hero.alias} Roles`} className={cn("h-1/5 flex")}>
-            //       {hero.roles.map((role) => (
-            //         <TooltipProvider
-            //           key={`${hero.alias} ${role}`}
-            //           delayDuration={300}
-            //         >
-            //           <Tooltip>
-            //             <TooltipTrigger asChild>
-            //               <Image
-            //                 src={`/${role.toLocaleLowerCase()}.svg`}
-            //                 alt={role}
-            //                 height={450}
-            //                 width={560}
-            //                 className={cn("h-full w-auto")}
-            //               />
-            //             </TooltipTrigger>
-            //             <TooltipContent>
-            //               <p>{role}</p>
-            //             </TooltipContent>
-            //           </Tooltip>
-            //         </TooltipProvider>
-            //       ))}
-            //     </div>
-            //   );
-            // else if (property === "complexity")
-            //   return (
-            //     <div
-            //       key={`${hero.alias} Complexity`}
-            //       className={cn("h-1/5 flex")}
-            //     >
-            //       {[...Array(complexityValues[hero.complexity])].map(
-            //         (_, idx) => (
-            //           <TooltipProvider
-            //             key={`${hero.alias} ${hero.complexity} ${idx + 1}`}
-            //             delayDuration={300}
-            //           >
-            //             <Tooltip>
-            //               <TooltipTrigger asChild>
-            //                 <Image
-            //                   src={"/complexity.svg"}
-            //                   alt={hero.complexity}
-            //                   height={450}
-            //                   width={560}
-            //                   className={cn("h-full w-auto")}
-            //                 />
-            //               </TooltipTrigger>
-            //               <TooltipContent>
-            //                 <p>{hero.complexity}</p>
-            //               </TooltipContent>
-            //             </Tooltip>
-            //           </TooltipProvider>
-            //         )
-            //       )}
-            //     </div>
-            //   );
           })}
         </div>
         <DialogFooter>

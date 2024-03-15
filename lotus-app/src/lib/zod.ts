@@ -40,6 +40,15 @@ export const Item = z
     name: z.string(),
     type: z.enum(itemType.enumValues),
     classification: z.enum(itemClassification.enumValues),
+    prices: z
+      .array(
+        z.object({
+          type: z.string().nullable(),
+          amount: z.string().nullable(),
+          unit: z.string().nullable(),
+        })
+      )
+      .nullable(),
     hasStats: z.boolean(),
     hasAbilities: z.boolean(),
     hasPrices: z.boolean(),
@@ -54,6 +63,8 @@ export type ItemType = z.infer<typeof Item>;
 
 export const ItemFilter = z.object({
   category: z.enum([
+    "type",
+    "classification",
     "hasStats",
     "hasAbilities",
     "hasPrices",
@@ -61,7 +72,9 @@ export const ItemFilter = z.object({
     "hasComponents",
     "hasRecipe",
   ]),
-  display: z.enum([
+  criteria: z.enum([
+    ...itemType.enumValues,
+    ...itemClassification.enumValues,
     "Has Stats",
     "Has Abilities",
     "Has Prices",
