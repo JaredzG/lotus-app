@@ -69,38 +69,58 @@ const ItemItem = ({
           <DialogDescription>
             {item.prices ? (
               <div className={cn("flex gap-3")}>
-                <span className={cn("text-yellow-500")}>
-                  Purchase Cost:&nbsp;
-                  <span className={cn("font-semibold text-white")}>
-                    {itemPurchasePrice !== null &&
-                      `${itemPurchasePrice.toString()} ${item.prices[0].unit}`}
+                <span className={cn("text-white")}>
+                  Purchase:&nbsp;
+                  <span className={cn("text-green-500")}>
+                    {String.fromCodePoint(0x1fa99)}
                   </span>
+                  {itemPurchasePrice !== null && (
+                    <span className={cn("font-semibold")}>
+                      <span className={cn("text-lg leading-none")}>
+                        {itemPurchasePrice.toString()}
+                        &nbsp;
+                      </span>
+                    </span>
+                  )}
                 </span>
-                <span className={cn("text-yellow-500")}>
-                  Sell Value:&nbsp;
-                  <span className={cn("font-semibold text-white")}>
-                    {itemSellPrice !== null ? (
-                      itemSellPrice === Math.floor(itemSellPrice) ? (
-                        `${itemSellPrice.toString()} ${item.prices[1].unit}`
-                      ) : (
-                        `${item.prices[1].amount} ${item.prices[1].unit}`
-                      )
-                    ) : (
-                      <span
-                        className={cn("text-white font-semibold")}
-                      >{`${String.fromCodePoint(0x274c)} Sellable`}</span>
-                    )}
+                {itemSellPrice !== null ? (
+                  <span className={cn("text-white")}>
+                    Refund:&nbsp;
+                    <span className={cn("text-green-500")}>
+                      {String.fromCodePoint(0x1fa99)}
+                    </span>
+                    <span className={cn("font-semibold")}>
+                      <span className={cn("text-lg leading-none")}>
+                        {itemSellPrice === Math.floor(itemSellPrice)
+                          ? itemSellPrice.toString()
+                          : item.prices[1].amount}
+                      </span>
+                      {item.prices[1].unit?.includes("per Count") && "/ct"}
+                    </span>
                   </span>
-                </span>
+                ) : (
+                  <span className={cn("text-white font-semibold")}>
+                    <span className={cn("text-lg leading-none")}>
+                      {String.fromCodePoint(0x274c)}&nbsp;
+                    </span>
+                    Sellable
+                  </span>
+                )}
               </div>
             ) : (
               <div className={cn("flex gap-3")}>
-                <span
-                  className={cn("text-white font-semibold")}
-                >{`${String.fromCodePoint(0x274c)} Purchasable`}</span>
-                <span
-                  className={cn("text-white font-semibold")}
-                >{`${String.fromCodePoint(0x274c)} Sellable`}</span>
+                <span className={cn("text-white font-semibold")}>
+                  <span className={cn("text-lg leading-none")}>
+                    {String.fromCodePoint(0x274c)}&nbsp;
+                  </span>
+                  Purchasable
+                </span>
+                <span className={cn("text-white font-semibold")}>
+                  <span className={cn("text-lg leading-none")}>
+                    {String.fromCodePoint(0x274c)}&nbsp;
+                  </span>
+                  Sellable
+                </span>
               </div>
             )}
           </DialogDescription>

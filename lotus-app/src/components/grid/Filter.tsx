@@ -30,7 +30,7 @@ const Filter = ({
           }
           return false;
         })
-          ? "bg-gradient-to-r from-red-500 to-yellow-500 text-black"
+          ? "bg-gradient-to-r from-red-500 to-yellow-700"
           : ""
       )}
       onClick={() => onFilterClick(category, criteria)}

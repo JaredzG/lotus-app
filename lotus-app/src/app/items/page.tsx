@@ -19,10 +19,10 @@ const orderCategories = {
     "Increasing Purchase Price",
   [`${String.fromCodePoint(0x2b07)} Purchase ${String.fromCodePoint(0x1f4b0)}`]:
     "Decreasing Purchase Price",
-  [`${String.fromCodePoint(0x2b06)} Sell ${String.fromCodePoint(0x1f4b0)}`]:
-    "Increasing Sell Value",
-  [`${String.fromCodePoint(0x2b07)} Sell ${String.fromCodePoint(0x1f4b0)}`]:
-    "Decreasing Sell Value",
+  [`${String.fromCodePoint(0x2b06)} Refund ${String.fromCodePoint(0x1f4b0)}`]:
+    "Increasing Refund Value",
+  [`${String.fromCodePoint(0x2b07)} Refund ${String.fromCodePoint(0x1f4b0)}`]:
+    "Decreasing Refund Value",
 };
 
 const filterCategories: Record<

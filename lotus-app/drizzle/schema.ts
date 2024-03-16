@@ -5,10 +5,12 @@ import {
   serial,
   text,
   boolean,
+  foreignKey,
   integer,
   primaryKey,
   numeric,
 } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 export const keyStatus = pgEnum("key_status", [
   "default",
@@ -89,12 +91,12 @@ export const heroAbilityFeatureValue = pgEnum("hero_ability_feature_value", [
   "Wolves",
 ]);
 export const heroAbilityUpgradeType = pgEnum("hero_ability_upgrade_type", [
-  "Shard Upgrade",
-  "Scepter Upgrade",
+  "Shard",
+  "Scepter",
 ]);
 export const heroMetaInfoPercentageType = pgEnum(
   "hero_meta_info_percentage_type",
-  ["Pick Percentage", "Win Percentage"]
+  ["Pick Rate", "Win Rate"]
 );
 export const heroMetaInfoRank = pgEnum("hero_meta_info_rank", [
   "Herald | Guardian | Crusader",
@@ -179,12 +181,9 @@ export const itemComponentPriceUnit = pgEnum("item_component_price_unit", [
 ]);
 export const itemMetaInfoPercentageType = pgEnum(
   "item_meta_info_percentage_type",
-  ["Use Percentage", "Win Percentage"]
+  ["Usage Rate", "Win Rate"]
 );
-export const itemPriceType = pgEnum("item_price_type", [
-  "Purchase Price",
-  "Sell Price",
-]);
+export const itemPriceType = pgEnum("item_price_type", ["Purchase", "Refund"]);
 export const itemPriceUnit = pgEnum("item_price_unit", [
   "Gold",
   "Gold per Count",
@@ -441,28 +440,6 @@ export const itemMetaInfoPercentage = pgTable(
   }
 );
 
-export const itemPrice = pgTable(
-  "item_price",
-  {
-    id: serial("id").notNull(),
-    itemId: integer("item_id")
-      .notNull()
-      .references(() => item.id),
-    type: itemPriceType("type").notNull(),
-    amount: numeric("amount", { precision: 5, scale: 1 }),
-    unit: itemPriceUnit("unit"),
-  },
-  (table) => {
-    return {
-      itemPriceItemIdTypePk: primaryKey({
-        columns: [table.itemId, table.type],
-        name: "item_price_item_id_type_pk",
-      }),
-      itemPriceIdUnique: unique("item_price_id_unique").on(table.id),
-    };
-  }
-);
-
 export const heroMetaInfo = pgTable(
   "hero_meta_info",
   {
@@ -503,6 +480,28 @@ export const heroTalent = pgTable(
         name: "hero_talent_hero_id_level_type_pk",
       }),
       heroTalentIdUnique: unique("hero_talent_id_unique").on(table.id),
+    };
+  }
+);
+
+export const itemPrice = pgTable(
+  "item_price",
+  {
+    id: serial("id").notNull(),
+    itemId: integer("item_id")
+      .notNull()
+      .references(() => item.id),
+    type: itemPriceType("type").notNull(),
+    amount: numeric("amount", { precision: 5, scale: 1 }),
+    unit: itemPriceUnit("unit"),
+  },
+  (table) => {
+    return {
+      itemPriceItemIdTypePk: primaryKey({
+        columns: [table.itemId, table.type],
+        name: "item_price_item_id_type_pk",
+      }),
+      itemPriceIdUnique: unique("item_price_id_unique").on(table.id),
     };
   }
 );

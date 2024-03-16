@@ -93,11 +93,10 @@ const GET = async (request: NextRequest) => {
       data["Items"] = validItems.sort((itemA, itemB) => {
         const itemAPrices = itemA.prices;
         const itemBPrices = itemB.prices;
-        if (itemAPrices === null)
-          if (itemBPrices === null)
-            return (itemA.name as any) - (itemB.name as any);
-          else return -1;
-        else if (itemBPrices === null) return 1;
+        if (itemAPrices === null) return 1;
+        else if (itemBPrices === null) return -1;
+        else if (itemAPrices === null && itemBPrices === null)
+          return (itemA.name as any) - (itemB.name as any);
         else
           return (
             parseInt(itemAPrices[0].amount!) - parseInt(itemBPrices[0].amount!)
@@ -108,32 +107,30 @@ const GET = async (request: NextRequest) => {
       data["Items"] = validItems.sort((itemA, itemB) => {
         const itemAPrices = itemA.prices;
         const itemBPrices = itemB.prices;
-        if (itemBPrices === null)
-          if (itemAPrices === null)
-            return (itemB.name as any) - (itemA.name as any);
-          else return -1;
-        else if (itemAPrices === null) return 1;
+        if (itemAPrices === null) return 1;
+        else if (itemBPrices === null) return -1;
+        else if (itemAPrices === null && itemBPrices === null)
+          return (itemB.name as any) - (itemA.name as any);
         else
           return (
             parseInt(itemBPrices[0].amount!) - parseInt(itemAPrices[0].amount!)
           );
       });
       break;
-    case "Increasing Sell Value":
+    case "Increasing Refund Value":
       data["Items"] = validItems.sort((itemA, itemB) => {
         const itemAPrices = itemA.prices;
         const itemBPrices = itemB.prices;
-        if (itemAPrices === null)
-          if (itemBPrices === null)
-            return (itemA.name as any) - (itemB.name as any);
-          else return -1;
-        else if (itemBPrices === null) return 1;
+        if (itemAPrices === null) return 1;
+        else if (itemBPrices === null) return -1;
         else {
-          if (itemAPrices[1].amount === null)
-            if (itemBPrices[1].amount === null)
-              return (itemA.name as any) - (itemB.name as any);
-            else return -1;
-          else if (itemBPrices[1].amount === null) return 1;
+          if (itemAPrices[1].amount === null) return 1;
+          else if (itemBPrices[1].amount === null) return -1;
+          else if (
+            itemAPrices[1].amount === null &&
+            itemBPrices[1].amount === null
+          )
+            return (itemA.name as any) - (itemB.name as any);
           else
             return (
               parseFloat(itemAPrices[1].amount) -
@@ -142,21 +139,20 @@ const GET = async (request: NextRequest) => {
         }
       });
       break;
-    case "Decreasing Sell Value":
+    case "Decreasing Refund Value":
       data["Items"] = validItems.sort((itemA, itemB) => {
         const itemAPrices = itemA.prices;
         const itemBPrices = itemB.prices;
-        if (itemBPrices === null)
-          if (itemAPrices === null)
-            return (itemB.name as any) - (itemA.name as any);
-          else return -1;
-        else if (itemAPrices === null) return 1;
+        if (itemAPrices === null) return 1;
+        else if (itemBPrices === null) return -1;
         else {
-          if (itemBPrices[1].amount === null)
-            if (itemAPrices[1].amount === null)
-              return (itemB.name as any) - (itemA.name as any);
-            else return -1;
-          else if (itemAPrices[1].amount === null) return 1;
+          if (itemAPrices[1].amount === null) return 1;
+          else if (itemBPrices[1].amount === null) return -1;
+          else if (
+            itemAPrices[1].amount === null &&
+            itemBPrices[1].amount === null
+          )
+            return (itemB.name as any) - (itemA.name as any);
           else
             return (
               parseFloat(itemBPrices[1].amount) -
